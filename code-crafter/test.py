@@ -189,6 +189,27 @@ def convert_files_list(files):
     result = []
     for file_info in files:
         file_dict = {}
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
         for key, value in file_info.items():
             if key == 'path' and isinstance(value, list):
                 file_dict[key] = [path.decode('utf-8', errors='replace') 
