@@ -36,6 +36,7 @@ This project merges the efficiency of P2P networking with the trust and decentra
 * **🔐 Encrypted Communication:** End-to-end encryption for all peer-to-peer communication to ensure privacy and security.
 * **💰 Tokenized Incentives:** A smart contract-based system to reward seeders with cryptographic tokens for their uptime and bandwidth contribution.
 * **🛡️ Security Hardening:** Mechanisms to mitigate common P2P attacks like Sybil attacks and swarm poisoning.
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
 * **🖥️ User-Friendly Frontend:** A simple graphical or web-based UI for selecting files, managing downloads, and viewing network status.
 
 ---

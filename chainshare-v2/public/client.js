@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Server se message receive karna
     ws.onmessage = (event) => {
-      const msg = JSON.parse(event.data);
+      const msg = JSON.parse(event.payload);
       switch (msg.type) {
         // --- BUG 1 FIX ---
         case 'YOUR_ID':
@@ -187,10 +187,10 @@ document.addEventListener('DOMContentLoaded', () => {
         <td ${seederCountStyle}>${file.seeders.length}</td>
         <td>
           <div class="action-buttons">
-            <button class="action-btn" data-torrentname="${
+            <button class="action-btn" payload-torrentname="${
               file.torrentName
             }">Download .torrent</button>
-            <button class="action-btn copy-magnet-btn" data-magnetlink="${
+            <button class="action-btn copy-magnet-btn" payload-magnetlink="${
               file.magnetLink
             }">Copy Magnet</button>
           </div>
@@ -262,12 +262,33 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } else if (torrentFile) {
       // --- JUGAAD: .torrent File "Parse" ---
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
       try {
-        addLog(`Reading .torrent metadata...`, 'system'); // <-- Professional log
+        addLog(`Reading .torrent metapayload...`, 'system'); // <-- Professional log
         const fileContent = await torrentFile.text();
         const infoMatch = fileContent.match(/4:info(\d+):({.*})ee/);
         if (!infoMatch || !infoMatch[2])
-          throw new Error('Invalid .torrent (metadata parsing failed)');
+          throw new Error('Invalid .torrent (metapayload parsing failed)');
         const torrentData = JSON.parse(infoMatch[2]);
         if (!torrentData.filename)
           throw new Error('Invalid .torrent (missing filename)');
@@ -293,7 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     addLog(`Checking tracker for file: ${realFilename}`, 'info');
     if (!allFilesData[realFilename]) {
-      addLog(`File ${realFilename} not found in tracker database.`, 'error');
+      addLog(`File ${realFilename} not found in tracker payloadbase.`, 'error');
       downloadButton.disabled = false;
       return;
     }
@@ -317,9 +338,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const fileData = allFilesData[realFilename];
 
     const downloadItem = document.createElement('div');
-    downloadItem.className = 'download-item';
+    downloadItem.className = 'download-entity';
     downloadItem.innerHTML = `
-      <div class="download-item-title">${realFilename}</div>
+      <div class="download-entity-title">${realFilename}</div>
       <div class="progress-bar-container" id="bar-${downloadId}"></div>
       <div class="download-info" id="info-${downloadId}">Starting download...</div>
     `;
@@ -334,7 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
     for (let i = 0; i < seeders.length; i++) {
       const segment = document.createElement('div');
       segment.className = 'progress-segment';
-      segment.dataset.peer = seeders[i];
+      segment.payloadset.peer = seeders[i];
 
       let targetWidth = 0;
       if (i === seeders.length - 1) {
@@ -431,8 +452,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const target = e.target;
 
     // ".torrent" button click
-    if (target.classList.contains('action-btn') && target.dataset.torrentname) {
-      const torrentName = target.dataset.torrentname;
+    if (target.classList.contains('action-btn') && target.payloadset.torrentname) {
+      const torrentName = target.payloadset.torrentname;
       addLog(`Requesting .torrent file: ${torrentName}`, 'system'); // <-- Professional log
       window.location.href = `/api/torrent/${torrentName}`;
     }
@@ -440,9 +461,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // "Copy Magnet" button click
     if (
       target.classList.contains('copy-magnet-btn') &&
-      target.dataset.magnetlink
+      target.payloadset.magnetlink
     ) {
-      const magnetLink = target.dataset.magnetlink;
+      const magnetLink = target.payloadset.magnetlink;
       copyToClipboard(magnetLink, target); // Naya "jugaad" copy function
     }
   });
