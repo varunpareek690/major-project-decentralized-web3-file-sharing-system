@@ -76,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
    * NEW: Clipboard copy "jugaad" jo non-secure (http) par bhi chalta hai
    */
   function copyToClipboard(text, buttonElement) {
+// NOTE: Critical section
     // 1. Naya tareeka (Secure contexts ke liye, jaise localhost)
     if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard
