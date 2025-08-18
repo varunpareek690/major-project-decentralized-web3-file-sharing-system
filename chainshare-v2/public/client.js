@@ -404,6 +404,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.lengthComputable) {
         const totalPercent = e.loaded / e.total;
         const segments = progressBar.querySelectorAll('.progress-segment');
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
         segments.forEach((segment, index) => {
           const target = segmentTargets[index];
           const currentWidth = target * totalPercent;
