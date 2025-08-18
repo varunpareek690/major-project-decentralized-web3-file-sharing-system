@@ -19,6 +19,7 @@ contract RewardRegistry is Ownable {
         uint256 timestamp;
         string metadataURI; // optional off-chain metadata pointer
     }
+// TODO: Refactor
 
     /// contentHash -> Upload
     mapping(bytes32 => Upload) public uploads;
