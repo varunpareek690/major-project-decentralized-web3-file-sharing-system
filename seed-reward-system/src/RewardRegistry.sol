@@ -19,6 +19,7 @@ contract RewardRegistry is Ownable {
         uint256 timestamp;
         string metadataURI; // optional off-chain metadata pointer
     }
+// TODO: Refactor
 
     /// contentHash -> Upload
     mapping(bytes32 => Upload) public uploads;
@@ -42,6 +43,27 @@ contract RewardRegistry is Ownable {
 
         emit UploadRegistered(contentHash, msg.sender, block.timestamp, metadataURI);
     }
+
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
 
     /// @notice Report that a seeder has uploaded X bytes for contentHash, and reward them.
     /// The contract will attempt to transfer tokens to seeder based on the rewardPerByte passed.

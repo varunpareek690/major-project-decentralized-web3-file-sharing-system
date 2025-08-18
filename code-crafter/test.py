@@ -236,6 +236,27 @@ def convert_files_list(files):
                 file_dict[key] = [path.decode('utf-8', errors='replace') 
                                 if isinstance(path, bytes) else path for path in value]
             else:
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
                 file_dict[key] = value
         result.append(file_dict)
     return result
@@ -271,6 +292,27 @@ def display_torrent_info(torrent):
         if 'length' in info:
             # Single file torrent
             size_bytes = info['length']
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
             size_mb = size_bytes / (1024 * 1024)
             print(f"File size: {size_bytes:,} bytes ({size_mb:.2f} MB)")
         elif 'files' in info:

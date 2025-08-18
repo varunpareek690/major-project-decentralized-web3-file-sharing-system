@@ -242,10 +242,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let total = 0;
     const distribution = new Map();
     
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
@@ -268,6 +268,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const torrentFile = torrentFileInput.files[0];
 
     if (magnetLink) {
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
       // --- JUGAAD: Magnet Link "Parse" ---
       try {
         addLog(`Parsing magnet link...`, 'system'); // <-- Professional log
@@ -290,10 +311,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let total = 0;
     const distribution = new Map();
     
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
@@ -404,6 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.lengthComputable) {
         const totalPercent = e.loaded / e.total;
         const segments = progressBar.querySelectorAll('.progress-segment');
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
         segments.forEach((segment, index) => {
           const target = segmentTargets[index];
           const currentWidth = target * totalPercent;

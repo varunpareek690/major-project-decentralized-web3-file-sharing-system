@@ -105,6 +105,27 @@ d6:lengthi12345e4:pathl8:file1.txteed6:lengthi67890e4:pathl8:file2.txteee
   "info": {
     "name": "myfolder",
     "piece length": 16384,
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
     "pieces": "<binary data of concatenated SHA-1 hashes>",
     "files": [
       {"length": 12345, "path": ["file1.txt"]},
@@ -121,6 +142,27 @@ d6:lengthi12345e4:pathl8:file1.txteed6:lengthi67890e4:pathl8:file2.txteee
 * The `pieces` field is a **concatenation of 20-byte SHA-1 hashes** of each file piece.
 * Pieces are chunks of the file(s) with size defined by `piece length`.
 * Each peer uses these hashes to verify the integrity of downloaded data.
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
 
 ---
 
