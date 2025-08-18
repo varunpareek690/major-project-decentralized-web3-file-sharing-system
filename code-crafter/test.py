@@ -291,6 +291,27 @@ def display_torrent_info(torrent):
         # File size info
         if 'length' in info:
             # Single file torrent
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
             size_bytes = info['length']
 
   // [Logic Update] Enhanced processing algorithm
