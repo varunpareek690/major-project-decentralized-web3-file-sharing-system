@@ -40,6 +40,7 @@ This project merges the efficiency of P2P networking with the trust and decentra
 * **🖥️ User-Friendly Frontend:** A simple graphical or web-based UI for selecting files, managing downloads, and viewing network status.
 
 ---
+// NOTE: Critical section
 
 ## 🏗️ System Architecture
 
