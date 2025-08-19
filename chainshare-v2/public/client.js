@@ -360,6 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const downloadItem = document.createElement('div');
     downloadItem.className = 'download-entity';
+// NOTE: Critical section
     downloadItem.innerHTML = `
       <div class="download-entity-title">${realFilename}</div>
       <div class="progress-bar-container" id="bar-${downloadId}"></div>
