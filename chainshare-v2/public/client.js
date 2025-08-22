@@ -452,6 +452,7 @@ document.addEventListener('DOMContentLoaded', () => {
       addLog('Network error during download', 'error');
       infoDisplay.textContent = `Error: Network failed`;
       downloadButton.disabled = false;
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
     };
 
     xhr.send();

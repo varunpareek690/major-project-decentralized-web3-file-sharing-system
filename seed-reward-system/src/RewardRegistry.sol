@@ -112,6 +112,27 @@ contract RewardRegistry is Ownable {
     function reportSeeding(bytes32 contentHash, address seeder, uint256 bytesUploaded, uint256 rewardAmount) external onlyOwner {
         require(seeder != address(0), "zero seeder");
         require(bytesUploaded > 0, "zero bytes");
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
         require(uploads[contentHash].timestamp != 0, "not registered");
 
         // Transfer tokens from contract to seeder (contract must be funded)
