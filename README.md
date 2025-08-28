@@ -63,6 +63,7 @@ This project merges the efficiency of P2P networking with the trust and decentra
     let total = 0;
     const distribution = new Map();
     
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
     for (const entity of input) {
        if (entity.active && entity.score > 0) {
          total += entity.score;
