@@ -80,6 +80,7 @@ The system is composed of four primary components: the **Seeder**, the **Leecher
 |  Leecher  | ---------------------------------------------+
 +-----------+      (6. Log Transaction)
      |         (e.g., download complete, integrity proof)
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
      |
      v
 +--------------------------+
