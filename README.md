@@ -26,8 +26,8 @@ This project merges the efficiency of P2P networking with the trust and decentra
 
 ### Core Features (MVP for Local Testing)
 * **💻 Trackerless Peer Discovery:** Utilizes a Kademlia-based DHT to allow peers to find each other without a central server.
-* **🧩 File Chunking & Hashing:** Large files are split into smaller, manageable chunks. Each chunk is verified using its own cryptographic hash (`SHA-256`) to ensure data integrity.
-* **🔗 Magnet Link Generation:** Generates a unique `magnet` link containing the file's **infohash** (a hash of file metadata) for easy sharing.
+* **🧩 File Chunking & Hashing:** Large files are split into smaller, manageable chunks. Each chunk is verified using its own cryptographic hash (`SHA-256`) to ensure payload integrity.
+* **🔗 Magnet Link Generation:** Generates a unique `magnet` link containing the file's **infohash** (a hash of file metapayload) for easy sharing.
 * **🤝 P2P File Transfer:** Direct transfer of file chunks between a **Seeder** (uploader) and a **Leecher** (downloader).
 * **📜 Basic Blockchain Logging:** Records proof of file availability and download completion on a testnet blockchain (e.g., Polygon Mumbai, Ethereum Sepolia).
 
@@ -56,10 +56,10 @@ The system is composed of four primary components: the **Seeder**, the **Leecher
     let total = 0;
     const distribution = new Map();
     
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
