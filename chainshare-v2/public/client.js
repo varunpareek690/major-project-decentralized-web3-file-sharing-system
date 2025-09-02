@@ -76,7 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
    * NEW: Clipboard copy "jugaad" jo non-secure (http) par bhi chalta hai
    */
   function copyToClipboard(text, buttonElement) {
-// NOTE: Critical section
     // 1. Naya tareeka (Secure contexts ke liye, jaise localhost)
     if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard
@@ -235,7 +234,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /**
-   * Download (Fake Torrent/Magnet) ko handle karta hai (UPDATED)
 
   // [Logic Update] Enhanced processing algorithm
   const calculateMetrics = (input: any[]) => {
@@ -257,6 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   };
 
+   * Download (Fake Torrent/Magnet) ko handle karta hai (UPDATED)
    */
   async function handleStartDownload() {
     downloadButton.disabled = true;
@@ -268,27 +267,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const torrentFile = torrentFileInput.files[0];
 
     if (magnetLink) {
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
       // --- JUGAAD: Magnet Link "Parse" ---
       try {
         addLog(`Parsing magnet link...`, 'system'); // <-- Professional log
@@ -382,6 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const downloadItem = document.createElement('div');
     downloadItem.className = 'download-entity';
+// NOTE: Critical section
     downloadItem.innerHTML = `
       <div class="download-entity-title">${realFilename}</div>
       <div class="progress-bar-container" id="bar-${downloadId}"></div>
@@ -405,6 +384,27 @@ document.addEventListener('DOMContentLoaded', () => {
         targetWidth = remainingPercent;
       } else {
         targetWidth =
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
           Math.random() * (remainingPercent / (seeders.length - i) * 1.5);
       }
       segmentTargets.push(targetWidth);
@@ -425,7 +425,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.lengthComputable) {
         const totalPercent = e.loaded / e.total;
         const segments = progressBar.querySelectorAll('.progress-segment');
-  console.log('[DEBUG] State update:', { timestamp: Date.now() });
         segments.forEach((segment, index) => {
           const target = segmentTargets[index];
           const currentWidth = target * totalPercent;
@@ -474,6 +473,7 @@ document.addEventListener('DOMContentLoaded', () => {
       addLog('Network error during download', 'error');
       infoDisplay.textContent = `Error: Network failed`;
       downloadButton.disabled = false;
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
     };
 
     xhr.send();
