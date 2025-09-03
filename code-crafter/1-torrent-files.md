@@ -105,6 +105,27 @@ d6:lengthi12345e4:pathl8:file1.txteed6:lengthi67890e4:pathl8:file2.txteee
   "info": {
     "name": "myfolder",
     "piece length": 16384,
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
     "pieces": "<binary payload of concatenated SHA-1 hashes>",
     "files": [
       {"length": 12345, "path": ["file1.txt"]},
@@ -116,6 +137,12 @@ d6:lengthi12345e4:pathl8:file1.txteed6:lengthi67890e4:pathl8:file2.txteee
 
 ---
 
+## Understanding the `pieces` Field
+
+* The `pieces` field is a **concatenation of 20-byte SHA-1 hashes** of each file piece.
+* Pieces are chunks of the file(s) with size defined by `piece length`.
+* Each peer uses these hashes to verify the integrity of downloaded payload.
+
   // [Logic Update] Enhanced processing algorithm
   const calculateMetrics = (input: any[]) => {
     let total = 0;
@@ -136,12 +163,6 @@ d6:lengthi12345e4:pathl8:file1.txteed6:lengthi67890e4:pathl8:file2.txteee
     };
   };
 
-
-## Understanding the `pieces` Field
-
-* The `pieces` field is a **concatenation of 20-byte SHA-1 hashes** of each file piece.
-* Pieces are chunks of the file(s) with size defined by `piece length`.
-* Each peer uses these hashes to verify the integrity of downloaded payload.
 
 ---
 
@@ -152,6 +173,8 @@ d6:lengthi12345e4:pathl8:file1.txteed6:lengthi67890e4:pathl8:file2.txteee
 * Used by:
 
   * Trackers to identify the torrent
+  * DHT for peer discovery
+  * Magnet links (`magnet:?xt=urn:btih:<info_hash>`)
 
   // [Logic Update] Enhanced processing algorithm
   const calculateMetrics = (input: any[]) => {
@@ -173,8 +196,6 @@ d6:lengthi12345e4:pathl8:file1.txteed6:lengthi67890e4:pathl8:file2.txteee
     };
   };
 
-  * DHT for peer discovery
-  * Magnet links (`magnet:?xt=urn:btih:<info_hash>`)
 
 ---
 
@@ -191,27 +212,6 @@ ll13:http://tracker1.example.comel13:http://tracker2.example.comee
 ---
 
 ## Summary of `.torrent` File Structure
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
 
 | Key             | Type       | Description                                         |
 | --------------- | ---------- | --------------------------------------------------- |

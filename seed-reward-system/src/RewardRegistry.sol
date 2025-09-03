@@ -19,6 +19,7 @@ contract RewardRegistry is Ownable {
         uint256 timestamp;
         string metadataURI; // optional off-chain metadata pointer
     }
+// TODO: Refactor
 
     /// contentHash -> Upload
     mapping(bytes32 => Upload) public uploads;
@@ -40,71 +41,29 @@ contract RewardRegistry is Ownable {
         u.timestamp = block.timestamp;
         u.metadataURI = metadataURI;
 
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
         emit UploadRegistered(contentHash, msg.sender, block.timestamp, metadataURI);
     }
+
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
 
     /// @notice Report that a seeder has uploaded X bytes for contentHash, and reward them.
     /// The contract will attempt to transfer tokens to seeder based on the rewardPerByte passed.
@@ -112,52 +71,10 @@ contract RewardRegistry is Ownable {
     function reportSeeding(bytes32 contentHash, address seeder, uint256 bytesUploaded, uint256 rewardAmount) external onlyOwner {
         require(seeder != address(0), "zero seeder");
         require(bytesUploaded > 0, "zero bytes");
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
         require(uploads[contentHash].timestamp != 0, "not registered");
 
         // Transfer tokens from contract to seeder (contract must be funded)
         if (rewardAmount > 0) {
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
             // safe ERC20 transfer pattern (assumes token returns true)
             require(rewardToken.transfer(seeder, rewardAmount), "transfer failed");
         }
@@ -168,6 +85,27 @@ contract RewardRegistry is Ownable {
 
     /// @notice Owner can withdraw tokens accidentally sent to contract
     function withdraw(address to, uint256 amount) external onlyOwner {
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
         require(to != address(0), "zero");
         require(rewardToken.transfer(to, amount), "transfer failed");
         emit RewardWithdrawn(to, amount);

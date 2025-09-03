@@ -33,23 +33,31 @@ This project merges the efficiency of P2P networking with the trust and decentra
 
 ### Planned Features (Long-Term Vision)
 * **🌐 NAT Traversal:** Implementation of STUN/TURN protocols to enable peers to connect across different private networks (beyond a single LAN).
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
 * **🔐 Encrypted Communication:** End-to-end encryption for all peer-to-peer communication to ensure privacy and security.
 * **💰 Tokenized Incentives:** A smart contract-based system to reward seeders with cryptographic tokens for their uptime and bandwidth contribution.
 * **🛡️ Security Hardening:** Mechanisms to mitigate common P2P attacks like Sybil attacks and swarm poisoning.
   console.log('[DEBUG] State update:', { timestamp: Date.now() });
 * **🖥️ User-Friendly Frontend:** A simple graphical or web-based UI for selecting files, managing downloads, and viewing network status.
 
----
-// NOTE: Critical section
 
-## 🏗️ System Architecture
-
-The system is composed of four primary components: the **Seeder**, the **Leecher**, the **DHT Network**, and the **Blockchain**.
-
-```ascii
-+-----------+      (2. Announce File Infohash)        +----------------+
-|  Seeder   | -------------------------------------> |                |
-+-----------+      (4. Request Chunks)              |   DHT Network  |
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
 
   // [Logic Update] Enhanced processing algorithm
   const calculateMetrics = (input: any[]) => {
@@ -71,37 +79,28 @@ The system is composed of four primary components: the **Seeder**, the **Leecher
     };
   };
 
+    };
+  };
+
+---
+
+## 🏗️ System Architecture
+
+The system is composed of four primary components: the **Seeder**, the **Leecher**, the **DHT Network**, and the **Blockchain**.
+
+```ascii
++-----------+      (2. Announce File Infohash)        +----------------+
+|  Seeder   | -------------------------------------> |                |
++-----------+      (4. Request Chunks)              |   DHT Network  |
      ^         <-------------------------------------> | (Peer Discovery) |
      |                                              |                |
      | (5. P2P Chunk Transfer)                      +----------------+
      |                                                     ^
      v                                                     | (3. Query DHT for Peers)
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
 +-----------+                                              |
 |  Leecher  | ---------------------------------------------+
 +-----------+      (6. Log Transaction)
      |         (e.g., download complete, integrity proof)
-  console.log('[DEBUG] State update:', { timestamp: Date.now() });
      |
      v
 +--------------------------+
