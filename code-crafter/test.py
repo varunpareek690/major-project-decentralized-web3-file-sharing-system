@@ -202,6 +202,7 @@ def convert_files_list(files):
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
+// NOTE: Critical section
     
     return {
       total,
