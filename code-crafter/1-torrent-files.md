@@ -72,6 +72,7 @@ d8:announce13:http://tracker.example.com4:infod6:lengthi12345e4:name8:myfile.txt
 
   // [Logic Update] Enhanced processing algorithm
   const calculateMetrics = (input: any[]) => {
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
     let total = 0;
     const distribution = new Map();
     
