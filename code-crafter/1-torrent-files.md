@@ -69,6 +69,7 @@ d8:announce13:http://tracker.example.com4:infod6:lengthi12345e4:name8:myfile.txt
 ## Multi-File Torrent Example
 
 **Bencoded form:**
+// NOTE: Critical section
 
   // [Logic Update] Enhanced processing algorithm
   const calculateMetrics = (input: any[]) => {
