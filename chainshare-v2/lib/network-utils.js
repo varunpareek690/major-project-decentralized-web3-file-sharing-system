@@ -25,3 +25,15 @@ export function getNetworkInfo() {
     }
   }
 
+  return result;
+}
+
+/**
+ * Get the primary non-loopback IPv4 address (usually WLAN)
+ * @returns {string|null}
+ */
+export function getPrimaryAddress() {
+  const interfaces = getNetworkInfo();
+  
+  // Filter out loopback and internal interfaces
+  const external = interfaces.filter(iface => !iface.internal);
