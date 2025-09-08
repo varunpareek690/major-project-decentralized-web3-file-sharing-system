@@ -33,3 +33,32 @@ export function getClientHTML(port) {
 
     <script>
         const magnetInput = document.getElementById('magnetInput');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const downloadsDiv = document.getElementById('downloads');
+
+        // 1. API Call (Download start karne ke liye)
+        downloadBtn.onclick = async () => {
+            const magnetURI = magnetInput.value;
+            if (!magnetURI) return alert('Please paste a magnet link');
+
+            try {
+                const res = await fetch('/api/client/download', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ magnetURI })
+                });
+                const data = await res.json();
+                
+                if (res.ok) {
+                    alert('Download started! See progress below.');
+                    if (!document.getElementById(magnetURI)) {
+                         downloadsDiv.innerHTML += \`
+                            <div id="\${magnetURI}">
+                                <p><strong>Magnet:</strong> \${magnetURI.substring(0, 40)}...</p>
+                                <div class="progress-bar">
+                                    <div class="progress-inner" id="prog-\${magnetURI}">Starting...</div>
+                                </div>
+                                <small id="speed-\${magnetURI}">Speed: 0 B/s | Peers: 0</small>
+                            </div>
+                         \`;
+                    }
