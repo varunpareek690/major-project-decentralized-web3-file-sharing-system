@@ -37,3 +37,31 @@ export function getPrimaryAddress() {
   
   // Filter out loopback and internal interfaces
   const external = interfaces.filter(iface => !iface.internal);
+  
+  if (external.length === 0) {
+    return null;
+  }
+
+  // Prefer wireless interfaces
+  const wireless = external.find(iface => 
+    iface.name.toLowerCase().includes('wlan') ||
+    iface.name.toLowerCase().includes('wi-fi') ||
+    iface.name.toLowerCase().includes('wifi')
+  );
+
+  if (wireless) {
+    return wireless.address;
+  }
+
+  // Return first non-loopback address
+  return external[0].address;
+}
+
+/**
+ * Generate tracker URLs for all available network interfaces
+ * @param {number} port - Tracker port
+ * @returns {string[]}
+ */
+export function getTrackerUrls(port = 8000) {
+  const interfaces = getNetworkInfo();
+  const urls = [];
