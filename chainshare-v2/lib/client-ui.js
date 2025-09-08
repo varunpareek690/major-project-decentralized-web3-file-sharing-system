@@ -25,3 +25,11 @@ export function getClientHTML(port) {
         <button id="downloadBtn">Download</button>
 
         <hr>
+        <h2>Active Downloads</h2>
+        <div id="downloads">
+            <p>No active downloads...</p>
+        </div>
+    </div>
+
+    <script>
+        const magnetInput = document.getElementById('magnetInput');
