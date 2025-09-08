@@ -16,3 +16,12 @@ export function getClientHTML(port) {
         .progress-inner { background: #007bff; color: white; padding: 5px; width: 0%; text-align: center; }
     </style>
 </head>
+<body>
+    <div class="container">
+        <h1>🔗 ChainShare Client</h1>
+        
+        <h2>Download Torrent</h2>
+        <input type="text" id="magnetInput" placeholder="Paste magnet link here...">
+        <button id="downloadBtn">Download</button>
+
+        <hr>
