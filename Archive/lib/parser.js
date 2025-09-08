@@ -21,3 +21,24 @@ export async function parseFromTorrentFile(filePath) {
 
     return {
       infoHash: parsed.infoHash || 'unknown',
+      name: parsed.name || 'unnamed',
+      files: Array.isArray(parsed.files)
+        ? parsed.files.map(f => ({
+            path: f.path || parsed.name || 'unknown',
+            length: f.length || 0,
+          }))
+        : [],
+      pieceLength: parsed.pieceLength || 0,
+      pieces: piecesToHexArray(parsed.pieces),
+    };
+  } catch (err) {
+    console.error('[parser] Failed to parse torrent:', filePath, err.message);
+    return {
+      infoHash: null,
+      name: 'invalid',
+      files: [],
+      pieceLength: 0,
+      pieces: [],
+    };
+  }
+}
