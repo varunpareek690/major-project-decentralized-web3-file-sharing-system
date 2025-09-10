@@ -38,3 +38,28 @@ header h1 {
   display: flex;
   justify-content: space-between;
   font-size: 0.9em;
+  color: #606770;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+}
+
+#peer-id {
+  color: #007bff;
+  font-weight: 600;
+}
+
+#peer-count {
+  font-weight: 600;
+  color: #28a745;
+}
+
+/* --- Cards (Sections) --- */
+.card {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+}
+
+.card h2 {
