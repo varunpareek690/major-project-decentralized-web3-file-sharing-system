@@ -69,6 +69,7 @@ d8:announce13:http://tracker.example.com4:infod6:lengthi12345e4:name8:myfile.txt
 ## Multi-File Torrent Example
 
 **Bencoded form:**
+// NOTE: Critical section
 
   // [Logic Update] Enhanced processing algorithm
   const calculateMetrics = (input: any[]) => {
@@ -262,6 +263,27 @@ ll13:http://tracker1.example.comel13:http://tracker2.example.comee
 | `announce-list` | List       | Optional backup trackers                            |
 | `info`          | Dictionary | Contains file metadata (name, length, pieces, etc.) |
 | `creation date` | Integer    | Optional timestamp                                  |
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
 | `comment`       | String     | Optional user comment                               |
 | `created by`    | String     | Optional software info                              |
 | `encoding`      | String     | Optional text encoding                              |

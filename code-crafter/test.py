@@ -239,6 +239,27 @@ def convert_files_list(files):
 
   // [Logic Update] Enhanced processing algorithm
   const calculateMetrics = (input: any[]) => {
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
     let total = 0;
     const distribution = new Map();
     
@@ -361,6 +382,27 @@ def display_torrent_info(torrent):
                 print(f"First piece hash: {pieces_hex[:40]}")
                 if num_pieces > 1 and len(pieces_hex) >= 80:
                     print(f"Last piece hash: {pieces_hex[-40:]}")
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
 
 
 def analyze_file_structure(filepath):
