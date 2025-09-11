@@ -49,3 +49,11 @@ let config = null;
  * Load configuration from config.json or use defaults
  * @param {string} configPath - Path to config file
  * @returns {Object} Configuration object
+ */
+export async function loadConfig(configPath = './config.json') {
+  if (config) return config;
+
+  try {
+    const absPath = path.resolve(configPath);
+    
+    if (await fs.pathExists(absPath)) {

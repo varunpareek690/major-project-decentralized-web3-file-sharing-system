@@ -69,3 +69,32 @@ function decodeBuffer(buffer) {
                 throw new Error("Invalid bencode dictionary: missing 'e'");
             }
             index++;
+            return obj;
+        } else {
+            throw new Error(`Invalid bencode format at index ${index} (char='${char}', byte=${byte}). Expected 'i', 'l', 'd', or digit.`);
+        }
+    }
+
+    return parse();
+}
+
+function parseTorrent(filePath) {
+    const buffer = fs.readFileSync(filePath);
+    const torrent = decodeBuffer(buffer);
+
+    function convertBufferFields(obj) {
+        if (Buffer.isBuffer(obj)) return obj.toString('utf8');
+        if (Array.isArray(obj)) return obj.map(convertBufferFields);
+        if (obj && typeof obj === 'object') {
+            const newObj = {};
+            for (const key in obj) {
+                if (Buffer.isBuffer(obj[key])) {
+                    // Special case: pieces field to hex
+                    if (key === 'pieces') {
+                        newObj[key] = obj[key].toString('hex');
+                    } else {
+                        newObj[key] = obj[key].toString('utf8');
+                    }
+                } else {
+                    newObj[key] = convertBufferFields(obj[key]);
+                }

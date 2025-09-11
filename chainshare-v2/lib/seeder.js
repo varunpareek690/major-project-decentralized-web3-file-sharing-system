@@ -30,3 +30,33 @@ export async function seed(filePaths, options = {}) {
     const absPath = path.resolve(filePath);
     const parsed = path.parse(absPath);
     
+    // Check if path exists
+    const stats = await fs.stat(absPath);
+    const isDirectory = stats.isDirectory();
+
+    // Create torrent options
+    const torrentOpts = {
+      name: options.name || parsed.base,
+      announce: options.announce || [],  // Can be empty with DHT!
+      comment: options.comment || 'Created by ChainShare',
+      createdBy: 'ChainShare/1.0.0',
+      private: false,  // IMPORTANT: Must be false for DHT to work
+    };
+
+    console.log(`\n📦 Creating torrent for: ${parsed.base}`);
+    if (torrentOpts.announce.length > 0) {
+      console.log(`📡 Trackers: ${torrentOpts.announce.join(', ')}`);
+    }
+    console.log(`🔍 DHT: Enabled (peers will find each other automatically)`);
+
+    // Create torrent
+    const torrentBuffer = await new Promise((resolve, reject) => {
+      createTorrent(absPath, torrentOpts, (err, torrent) => {
+        if (err) reject(err);
+        else resolve(torrent);
+      });
+    });
+
+    // Parse the created torrent
+    const torrentInfo = parseTorrent(torrentBuffer);
+
