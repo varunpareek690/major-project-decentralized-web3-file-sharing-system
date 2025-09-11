@@ -94,6 +94,7 @@ This project merges the efficiency of P2P networking with the trust and decentra
     }
     
     return {
+// TODO: Refactor
 // NOTE: Critical section
       total,
       average: input.length ? total / input.length : 0,
