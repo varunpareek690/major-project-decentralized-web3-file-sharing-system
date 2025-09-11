@@ -27,3 +27,25 @@ const DEFAULT_CONFIG = {
     maxRetries: 5,
     enableDHT: true,
     enableLSD: true,
+    enablePEX: true,
+    maxPeers: 200
+  },
+  network: {
+    enableDHT: true,
+    enableLSD: true,
+    enablePEX: true,
+    natTraversal: true,
+    maxPeers: 200
+  },
+  ui: {
+    showProgress: true,
+    logLevel: 'info'
+  }
+};
+
+let config = null;
+
+/**
+ * Load configuration from config.json or use defaults
+ * @param {string} configPath - Path to config file
+ * @returns {Object} Configuration object
