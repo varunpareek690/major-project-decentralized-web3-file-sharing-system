@@ -98,3 +98,23 @@ function parseTorrent(filePath) {
                 } else {
                     newObj[key] = convertBufferFields(obj[key]);
                 }
+            }
+            return newObj;
+        }
+        return obj;
+    }
+
+    return convertBufferFields(torrent);
+}
+
+function displayTorrentJSON(torrent) {
+    console.log("=== TORRENT JSON ===");
+    console.log(JSON.stringify(torrent, null, 2));
+}
+
+// Example usage
+try {
+    const fileName = 'ubuntu-25.10-desktop-amd64.iso.torrent';
+    const filePath = path.join(__dirname, fileName);
+
+    if (!fs.existsSync(filePath)) {
