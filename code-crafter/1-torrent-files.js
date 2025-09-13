@@ -118,3 +118,9 @@ try {
     const filePath = path.join(__dirname, fileName);
 
     if (!fs.existsSync(filePath)) {
+        console.error(`File ${filePath} not found`);
+        process.exit(1);
+    }
+
+    console.log(`Parsing torrent file: ${filePath}`);
+    const torrent = parseTorrent(filePath);
