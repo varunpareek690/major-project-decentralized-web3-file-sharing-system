@@ -65,3 +65,32 @@ export function getPrimaryAddress() {
 export function getTrackerUrls(port = 8000) {
   const interfaces = getNetworkInfo();
   const urls = [];
+
+  for (const iface of interfaces) {
+    if (!iface.internal) {
+      urls.push(`http://${iface.address}:${port}/announce`);
+    }
+  }
+
+  return urls;
+}
+
+/**
+ * Check if an address is on the local network
+ * @param {string} address - IP address to check
+ * @returns {boolean}
+ */
+export function isLocalNetwork(address) {
+  // Check for private IP ranges
+  const parts = address.split('.').map(Number);
+  
+  if (parts[0] === 10) return true; // 10.0.0.0/8
+  if (parts[0] === 172 && parts[1] >= 16 && parts[1] <= 31) return true; // 172.16.0.0/12
+  if (parts[0] === 192 && parts[1] === 168) return true; // 192.168.0.0/16
+  if (parts[0] === 127) return true; // Loopback
+  
+  return false;
+}
+
+/**
+ * Get hostname
