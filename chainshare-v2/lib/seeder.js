@@ -60,3 +60,31 @@ export async function seed(filePaths, options = {}) {
     // Parse the created torrent
     const torrentInfo = parseTorrent(torrentBuffer);
 
+    // Save .torrent file
+    const torrentFileName = `${parsed.name}.torrent`;
+    const torrentOutDir = options.torrentOutDir || './data/torrents';
+    const torrentFilePath = path.join(torrentOutDir, torrentFileName);
+
+    await fs.ensureDir(torrentOutDir);
+    await fs.writeFile(torrentFilePath, torrentBuffer);
+
+    // Start seeding
+    const torrent = await new Promise((resolve, reject) => {
+      const t = client.seed(absPath, torrentOpts, (torrent) => {
+        resolve(torrent);
+      });
+
+      t.on('error', reject);
+      
+      // DHT announce
+      t.on('dhtAnnounce', () => {
+        console.log('📢 Announced to DHT network');
+      });
+
+      // Tracker announce
+      t.on('tracker-announce', () => {
+        console.log('📢 Announced to tracker');
+      });
+    });
+
+    // Wait a bit for DHT to initialize

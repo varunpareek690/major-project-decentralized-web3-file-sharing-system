@@ -57,3 +57,12 @@ export async function loadConfig(configPath = './config.json') {
     const absPath = path.resolve(configPath);
     
     if (await fs.pathExists(absPath)) {
+      const fileContent = await fs.readFile(absPath, 'utf-8');
+      const userConfig = JSON.parse(fileContent);
+      
+      // Merge with defaults
+      config = mergeDeep(DEFAULT_CONFIG, userConfig);
+      console.log('✅ Loaded configuration from', absPath);
+    } else {
+      config = DEFAULT_CONFIG;
+      console.log('ℹ️  Using default configuration');
