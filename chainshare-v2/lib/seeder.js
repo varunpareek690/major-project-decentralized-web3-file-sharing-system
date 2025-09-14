@@ -88,3 +88,32 @@ export async function seed(filePaths, options = {}) {
     });
 
     // Wait a bit for DHT to initialize
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    results.push({
+      path: absPath,
+      infoHash: torrent.infoHash,
+      magnetURI: torrent.magnetURI,
+      torrentFile: torrentFilePath,
+      torrent: torrent,
+      parsed: { name: torrent.name }
+    });
+
+    // Log peer discovery
+    torrent.on('peer', (peer) => {
+      console.log(`🤝 Peer connected: ${peer.id} (${peer.addr})`);
+    });
+
+    torrent.on('wire', (wire, addr) => {
+      console.log(`⚡ Wire connected from: ${addr}`);
+    });
+
+    console.log(`\n✅ Seeding via DHT + LSD + Trackers`);
+    console.log(`🔑 InfoHash: ${torrent.infoHash}`);
+    console.log(`📊 Files: ${torrent.files.length}`);
+    console.log(`📦 Size: ${formatBytes(torrent.length)}`);
+  }
+
+  // Monitor DHT status
+  setInterval(() => {
+    if (client.torrents.length > 0) {

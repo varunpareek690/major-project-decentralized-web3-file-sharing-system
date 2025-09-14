@@ -66,3 +66,12 @@ export async function loadConfig(configPath = './config.json') {
     } else {
       config = DEFAULT_CONFIG;
       console.log('ℹ️  Using default configuration');
+      
+      // Create default config file
+      await fs.ensureDir(path.dirname(absPath));
+      await fs.writeFile(absPath, JSON.stringify(DEFAULT_CONFIG, null, 2));
+      console.log('✅ Created default config.json');
+    }
+  } catch (err) {
+    console.warn('⚠️  Error loading config, using defaults:', err.message);
+    config = DEFAULT_CONFIG;
