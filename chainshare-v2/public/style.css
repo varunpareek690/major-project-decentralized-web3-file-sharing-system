@@ -95,3 +95,33 @@ button {
   cursor: pointer;
   transition: background-color 0.2s;
 }
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+#seed-button {
+  background-color: #28a745;
+}
+#seed-button:hover {
+  background-color: #218838;
+}
+
+/* Updated Download Button */
+#download-button {
+  background-color: #ffc107;
+  color: #212529;
+  width: 100%; /* Make button full width */
+  margin-top: 15px;
+}
+#download-button:hover {
+  background-color: #e0a800;
+}
+
+/* --- Tracker Table (UPDATED) --- */
+#tracker-table {
