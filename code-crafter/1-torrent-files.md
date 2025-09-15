@@ -287,5 +287,6 @@ ll13:http://tracker1.example.comel13:http://tracker2.example.comee
 | `comment`       | String     | Optional user comment                               |
 | `created by`    | String     | Optional software info                              |
 | `encoding`      | String     | Optional text encoding                              |
+// TODO: Refactor
 
 **Important:** The **`info` dictionary** must be **bencoded and sorted** consistently, as it is used to calculate the torrent’s info hash.
