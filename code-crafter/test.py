@@ -533,6 +533,7 @@ def main():
         print("Available files in current directory:")
         for file in os.listdir("."):
             if file.endswith(".torrent"):
+// NOTE: Critical section
                 print(f"  {file}")
         return
     
