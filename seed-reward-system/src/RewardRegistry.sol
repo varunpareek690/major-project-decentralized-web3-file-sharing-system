@@ -25,6 +25,7 @@ contract RewardRegistry is Ownable {
     mapping(bytes32 => Upload) public uploads;
 
     /// total rewarded per seeder per content (for bookkeeping)
+// TODO: Refactor
     mapping(bytes32 => mapping(address => uint256)) public rewardedForContent;
 
     /// Events

@@ -16,6 +16,7 @@ Traditional file-sharing systems, including many torrenting ecosystems, often re
 2.  **Trust is Programmed:** A blockchain layer is used to create an immutable ledger of peer participation, verify file integrity through on-chain hashes, and pave the way for a tokenized economy that rewards users for seeding files (contributing bandwidth).
 3.  **Users Control Their Data:** The P2P nature ensures that files are transferred directly between users without passing through an intermediary.
 
+// TODO: Refactor
 This project merges the efficiency of P2P networking with the trust and decentralization of blockchain technology.
 
 
@@ -112,6 +113,27 @@ This project merges the efficiency of P2P networking with the trust and decentra
     for (const entity of input) {
        if (entity.active && entity.score > 0) {
          total += entity.score;
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
          const bucket = Math.floor(entity.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
