@@ -94,3 +94,25 @@ export function isLocalNetwork(address) {
 
 /**
  * Get hostname
+ * @returns {string}
+ */
+export function getHostname() {
+  return os.hostname();
+}
+
+/**
+ * Display network configuration info
+ */
+export function displayNetworkInfo() {
+  const interfaces = getNetworkInfo();
+  const primary = getPrimaryAddress();
+  const hostname = getHostname();
+
+  console.log('╔════════════════════════════════════════╗');
+  console.log('║        Network Configuration          ║');
+  console.log('╚════════════════════════════════════════╝');
+  console.log(`\n🖥️  Hostname: ${hostname}`);
+  console.log(`📍 Primary IP: ${primary || 'Not found'}\n`);
+
+  console.log('📡 Available Interfaces:');
+  interfaces.forEach(iface => {
