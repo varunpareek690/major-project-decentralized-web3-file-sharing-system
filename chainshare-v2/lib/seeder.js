@@ -117,3 +117,21 @@ export async function seed(filePaths, options = {}) {
   // Monitor DHT status
   setInterval(() => {
     if (client.torrents.length > 0) {
+      client.torrents.forEach(torrent => {
+        console.log(`\n📊 Status: ${torrent.name}`);
+        console.log(`   Peers: ${torrent.numPeers}`);
+        console.log(`   Upload: ${formatBytes(torrent.uploadSpeed)}/s`);
+        console.log(`   Uploaded: ${formatBytes(torrent.uploaded)}`);
+      });
+    }
+  }, 30000); // Every 30 seconds
+
+  return { client, results };
+}
+
+function formatBytes(bytes, decimals = 2) {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
