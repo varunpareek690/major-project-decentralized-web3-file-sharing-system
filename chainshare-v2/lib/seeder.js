@@ -117,3 +117,12 @@ export async function seed(filePaths, options = {}) {
   // Monitor DHT status
   setInterval(() => {
     if (client.torrents.length > 0) {
+      client.torrents.forEach(torrent => {
+        console.log(`\n📊 Status: ${torrent.name}`);
+        console.log(`   Peers: ${torrent.numPeers}`);
+        console.log(`   Upload: ${formatBytes(torrent.uploadSpeed)}/s`);
+        console.log(`   Uploaded: ${formatBytes(torrent.uploaded)}`);
+      });
+    }
+  }, 30000); // Every 30 seconds
+
