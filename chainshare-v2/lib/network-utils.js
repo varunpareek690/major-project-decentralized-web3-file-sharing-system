@@ -116,3 +116,15 @@ export function displayNetworkInfo() {
 
   console.log('📡 Available Interfaces:');
   interfaces.forEach(iface => {
+    const marker = iface.internal ? '🔒' : '🌐';
+    console.log(`   ${marker} ${iface.name}: ${iface.address}`);
+  });
+
+  const trackerUrls = getTrackerUrls();
+  if (trackerUrls.length > 0) {
+    console.log('\n🎯 Tracker URLs for WLAN:');
+    trackerUrls.forEach(url => console.log(`   ${url}`));
+  }
+
+  console.log('');
+}
