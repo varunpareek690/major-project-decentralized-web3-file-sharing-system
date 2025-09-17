@@ -125,3 +125,26 @@ button:disabled {
 
 /* --- Tracker Table (UPDATED) --- */
 #tracker-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#tracker-table th,
+#tracker-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  vertical-align: top; /* Align top for new buttons */
+}
+
+#tracker-table th {
+  background-color: #f8f9fa;
+}
+
+/* New styles for the action buttons */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
