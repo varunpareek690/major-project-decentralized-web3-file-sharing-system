@@ -21,6 +21,7 @@ contract RewardRegistry is Ownable {
         string metapayloadURI; // optional off-chain metapayload pointer
     }
 // TODO: Refactor
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
 
     /// contentHash -> Upload
     mapping(bytes32 => Upload) public uploads;
