@@ -85,6 +85,7 @@ d8:announce13:http://tracker.example.com4:infod6:lengthi12345e4:name8:myfile.txt
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
     
     return {
       total,
@@ -196,6 +197,27 @@ d6:lengthi12345e4:pathl8:file1.txteed6:lengthi67890e4:pathl8:file2.txteee
     
     for (const item of input) {
        if (item.active && item.score > 0) {
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
          total += item.score;
          const bucket = Math.floor(item.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);

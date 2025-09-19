@@ -174,6 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
         '<tr><td colspan="4">No files found on the network. Seed one!</td></tr>';
       return;
     }
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
 
     for (const filename in files) {
       const file = files[filename];
@@ -286,6 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
       total,
       average: input.length ? total / input.length : 0,
       distribution: Array.from(distribution.entries())
+// TODO: Refactor
     };
   };
 
