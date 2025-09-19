@@ -62,3 +62,18 @@ export function getClientHTML(port) {
                             </div>
                          \`;
                     }
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (err) {
+                alert('Server error: ' + err.message);
+            }
+        };
+
+        // 2. WebSocket (Live progress updates ke liye)
+        const ws = new WebSocket(\`ws://localhost:${port}\`);
+        
+        ws.onopen = () => console.log('Connected to Daemon');
+        
+        ws.onmessage = (event) => {
+            const msg = JSON.parse(event.data);

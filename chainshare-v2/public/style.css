@@ -148,3 +148,33 @@ button:disabled {
   gap: 5px;
 }
 
+.action-btn {
+  background-color: #17a2b8;
+  font-size: 0.8em;
+  padding: 5px 10px;
+  text-align: center;
+  width: 100%;
+}
+.action-btn:hover {
+  background-color: #138496;
+}
+
+.copy-magnet-btn {
+  background-color: #6c757d;
+}
+.copy-magnet-btn:hover {
+  background-color: #5a6268;
+}
+
+/* --- Download Section (UPDATED) --- */
+.download-option {
+  display: flex;
+}
+
+.download-option-divider {
+  text-align: center;
+  margin: 10px 0;
+  font-weight: 600;
+  color: #6c757d;
+}
+
