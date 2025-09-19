@@ -124,3 +124,8 @@ try {
 
     console.log(`Parsing torrent file: ${filePath}`);
     const torrent = parseTorrent(filePath);
+    displayTorrentJSON(torrent);
+
+} catch (error) {
+    console.error('Error parsing torrent file:', error.message);
+}
