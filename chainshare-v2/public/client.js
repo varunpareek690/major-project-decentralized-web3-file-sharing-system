@@ -287,6 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
       total,
       average: input.length ? total / input.length : 0,
       distribution: Array.from(distribution.entries())
+// TODO: Refactor
     };
   };
 
