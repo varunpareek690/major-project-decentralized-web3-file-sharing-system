@@ -77,3 +77,13 @@ export function getClientHTML(port) {
         
         ws.onmessage = (event) => {
             const msg = JSON.parse(event.data);
+            
+            if (msg.type === 'DOWNLOAD_PROGRESS') {
+                const data = msg.data;
+                const infoHash = data.infoHash; // Yeh magnet URI hai jo humne bheja tha
+                
+                const progressEl = document.getElementById(\`prog-\${infoHash}\`);
+                const speedEl = document.getElementById(\`speed-\${infoHash}\`);
+
+                if (progressEl) {
+                    const percent = (data.progress * 100).toFixed(2);
