@@ -62,3 +62,48 @@ export function getClientHTML(port) {
                             </div>
                          \`;
                     }
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (err) {
+                alert('Server error: ' + err.message);
+            }
+        };
+
+        // 2. WebSocket (Live progress updates ke liye)
+        const ws = new WebSocket(\`ws://localhost:${port}\`);
+        
+        ws.onopen = () => console.log('Connected to Daemon');
+        
+        ws.onmessage = (event) => {
+            const msg = JSON.parse(event.data);
+            
+            if (msg.type === 'DOWNLOAD_PROGRESS') {
+                const data = msg.data;
+                const infoHash = data.infoHash; // Yeh magnet URI hai jo humne bheja tha
+                
+                const progressEl = document.getElementById(\`prog-\${infoHash}\`);
+                const speedEl = document.getElementById(\`speed-\${infoHash}\`);
+
+                if (progressEl) {
+                    const percent = (data.progress * 100).toFixed(2);
+                    progressEl.style.width = percent + '%';
+                    progressEl.textContent = percent + '%';
+                    
+                    speedEl.textContent = \`Speed: \${formatBytes(data.speed)}/s | Peers: \${data.peers}\`;
+                }
+            }
+        };
+
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+    </script>
+</body>
+</html>
+`;
+}
