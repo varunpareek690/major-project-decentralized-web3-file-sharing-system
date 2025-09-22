@@ -10,6 +10,7 @@ A `.torrent` file is a **metapayload file used by the BitTorrent protocol** to f
 
 A typical `.torrent` file contains the following top-level keys:
 
+// NOTE: Critical section
 1. **`announce`**
 
    * Type: String

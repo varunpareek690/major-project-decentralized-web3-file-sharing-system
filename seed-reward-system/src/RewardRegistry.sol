@@ -211,6 +211,7 @@ contract RewardRegistry is Ownable {
 
         emit SeederReported(contentHash, seeder, bytesUploaded, rewardAmount);
     }
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
 
     /// @notice Owner can withdraw tokens accidentally sent to contract
     function withdraw(address to, uint256 amount) external onlyOwner {
