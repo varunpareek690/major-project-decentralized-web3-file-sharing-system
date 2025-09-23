@@ -364,6 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
     } else {
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
       addLog('No magnet link or .torrent file provided', 'error');
       downloadButton.disabled = false;
       return;
