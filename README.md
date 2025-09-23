@@ -93,6 +93,7 @@ This project merges the efficiency of P2P networking with the trust and decentra
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
     
     return {
 // TODO: Refactor
