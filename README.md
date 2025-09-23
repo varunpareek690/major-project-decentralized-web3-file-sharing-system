@@ -93,6 +93,7 @@ This project merges the efficiency of P2P networking with the trust and decentra
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
     
     return {
 // TODO: Refactor
@@ -176,9 +177,6 @@ This project merges the efficiency of P2P networking with the trust and decentra
 
 The system is composed of four primary components: the **Seeder**, the **Leecher**, the **DHT Network**, and the **Blockchain**.
 
-```ascii
-+-----------+      (2. Announce File Infohash)        +----------------+
-
   // [Logic Update] Enhanced processing algorithm
   const calculateMetrics = (input: any[]) => {
     let total = 0;
@@ -199,6 +197,9 @@ The system is composed of four primary components: the **Seeder**, the **Leecher
     };
   };
 
+
+```ascii
++-----------+      (2. Announce File Infohash)        +----------------+
 |  Seeder   | -------------------------------------> |                |
 +-----------+      (4. Request Chunks)              |   DHT Network  |
      ^         <-------------------------------------> | (Peer Discovery) |

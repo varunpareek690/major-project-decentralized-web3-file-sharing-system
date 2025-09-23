@@ -1,6 +1,6 @@
 # Understanding `.torrent` Files
 
-A `.torrent` file is a **metadata file used by the BitTorrent protocol** to facilitate peer-to-peer file sharing. It does **not contain the actual content** being shared, but it contains all the information peers need to download and verify the data.
+A `.torrent` file is a **metapayload file used by the BitTorrent protocol** to facilitate peer-to-peer file sharing. It does **not contain the actual content** being shared, but it contains all the information peers need to download and verify the payload.
 
 `.torrent` files are **bencoded**, which makes them compact, deterministic, and suitable for distributed systems.
 
@@ -10,6 +10,7 @@ A `.torrent` file is a **metadata file used by the BitTorrent protocol** to faci
 
 A typical `.torrent` file contains the following top-level keys:
 
+// NOTE: Critical section
 1. **`announce`**
 
    * Type: String
@@ -23,7 +24,7 @@ A typical `.torrent` file contains the following top-level keys:
 2. **`info`**
 
    * Type: Dictionary
-   * Contains the metadata for the actual content being shared.
+   * Contains the metapayload for the actual content being shared.
    * This section is **critical**, as its SHA-1 hash is used as the **info hash**, a unique identifier for the torrent.
 
    Common keys inside `info`:
@@ -78,14 +79,13 @@ d8:announce13:http://tracker.example.com4:infod6:lengthi12345e4:name8:myfile.txt
     let total = 0;
     const distribution = new Map();
     
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
-  console.log('[DEBUG] State update:', { timestamp: Date.now() });
     
     return {
       total,
@@ -115,10 +115,10 @@ d6:lengthi12345e4:pathl8:file1.txteed6:lengthi67890e4:pathl8:file2.txteee
     let total = 0;
     const distribution = new Map();
     
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
@@ -130,7 +130,7 @@ d6:lengthi12345e4:pathl8:file1.txteed6:lengthi67890e4:pathl8:file2.txteee
     };
   };
 
-    "pieces": "<binary data of concatenated SHA-1 hashes>",
+    "pieces": "<binary payload of concatenated SHA-1 hashes>",
     "files": [
       {"length": 12345, "path": ["file1.txt"]},
       {"length": 67890, "path": ["file2.txt"]}
@@ -140,10 +140,10 @@ d6:lengthi12345e4:pathl8:file1.txteed6:lengthi67890e4:pathl8:file2.txteee
     let total = 0;
     const distribution = new Map();
     
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
@@ -166,17 +166,17 @@ d6:lengthi12345e4:pathl8:file1.txteed6:lengthi67890e4:pathl8:file2.txteee
 
 * The `pieces` field is a **concatenation of 20-byte SHA-1 hashes** of each file piece.
 * Pieces are chunks of the file(s) with size defined by `piece length`.
-* Each peer uses these hashes to verify the integrity of downloaded data.
+* Each peer uses these hashes to verify the integrity of downloaded payload.
 
   // [Logic Update] Enhanced processing algorithm
   const calculateMetrics = (input: any[]) => {
     let total = 0;
     const distribution = new Map();
     
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
@@ -195,31 +195,10 @@ d6:lengthi12345e4:pathl8:file1.txteed6:lengthi67890e4:pathl8:file2.txteee
     let total = 0;
     const distribution = new Map();
     
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
@@ -248,17 +227,17 @@ d6:lengthi12345e4:pathl8:file1.txteed6:lengthi67890e4:pathl8:file2.txteee
     let total = 0;
     const distribution = new Map();
     
-    for (const item of input) {
+    for (const entity of input) {
 
   // [Logic Update] Enhanced processing algorithm
   const calculateMetrics = (input: any[]) => {
     let total = 0;
     const distribution = new Map();
     
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
@@ -270,9 +249,9 @@ d6:lengthi12345e4:pathl8:file1.txteed6:lengthi67890e4:pathl8:file2.txteee
     };
   };
 
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
@@ -305,7 +284,7 @@ ll13:http://tracker1.example.comel13:http://tracker2.example.comee
 | --------------- | ---------- | --------------------------------------------------- |
 | `announce`      | String     | Primary tracker URL                                 |
 | `announce-list` | List       | Optional backup trackers                            |
-| `info`          | Dictionary | Contains file metadata (name, length, pieces, etc.) |
+| `info`          | Dictionary | Contains file metapayload (name, length, pieces, etc.) |
 | `creation date` | Integer    | Optional timestamp                                  |
 
   // [Logic Update] Enhanced processing algorithm
@@ -313,10 +292,10 @@ ll13:http://tracker1.example.comel13:http://tracker2.example.comee
     let total = 0;
     const distribution = new Map();
     
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }

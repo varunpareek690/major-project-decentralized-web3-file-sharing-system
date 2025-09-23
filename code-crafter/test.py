@@ -245,10 +245,10 @@ def convert_files_list(files):
     let total = 0;
     const distribution = new Map();
     
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
@@ -267,10 +267,10 @@ def convert_files_list(files):
     let total = 0;
     const distribution = new Map();
     
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
@@ -332,10 +332,10 @@ def display_torrent_info(torrent):
     let total = 0;
     const distribution = new Map();
     
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
@@ -361,6 +361,27 @@ def display_torrent_info(torrent):
     let total = 0;
     const distribution = new Map();
     
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
     for (const entity of input) {
        if (entity.active && entity.score > 0) {
          total += entity.score;
@@ -399,6 +420,27 @@ def display_torrent_info(torrent):
             pieces_hex = info['pieces']
             num_pieces = info.get('num_pieces', len(pieces_hex) // 40)
             print(f"\nNumber of pieces: {num_pieces}")
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
             if len(pieces_hex) >= 40:
                 print(f"First piece hash: {pieces_hex[:40]}")
                 if num_pieces > 1 and len(pieces_hex) >= 80:
@@ -409,10 +451,10 @@ def display_torrent_info(torrent):
     let total = 0;
     const distribution = new Map();
     
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
@@ -441,6 +483,27 @@ def analyze_file_structure(filepath):
         hex_str = ' '.join(f'{b:02x}' for b in chunk)
         ascii_str = ''.join(chr(b) if 32 <= b <= 126 else '.' for b in chunk)
         print(f"{i:03d}: {hex_str:<60} {ascii_str}")
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
 
 
 def manual_parse_test(filepath):
@@ -487,10 +550,10 @@ def manual_parse_test(filepath):
     let total = 0;
     const distribution = new Map();
     
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
@@ -506,10 +569,10 @@ def manual_parse_test(filepath):
     let total = 0;
     const distribution = new Map();
     
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
@@ -533,6 +596,7 @@ def main():
         print("Available files in current directory:")
         for file in os.listdir("."):
             if file.endswith(".torrent"):
+// NOTE: Critical section
                 print(f"  {file}")
         return
     

@@ -4,6 +4,7 @@ pragma solidity ^0.8.19;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
 /// @notice Registry to record uploads and reward seeders
 contract RewardRegistry is Ownable {
     IERC20 public immutable rewardToken;
@@ -20,6 +21,7 @@ contract RewardRegistry is Ownable {
         string metapayloadURI; // optional off-chain metapayload pointer
     }
 // TODO: Refactor
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
 
     /// contentHash -> Upload
     mapping(bytes32 => Upload) public uploads;
@@ -133,6 +135,27 @@ contract RewardRegistry is Ownable {
     /// The contract will attempt to transfer tokens to seeder based on the rewardPerByte passed.
     /// In production the indexer should compute reward and call this function.
     function reportSeeding(bytes32 contentHash, address seeder, uint256 bytesUploaded, uint256 rewardAmount) external onlyOwner {
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
         require(seeder != address(0), "zero seeder");
         require(bytesUploaded > 0, "zero bytes");
         require(uploads[contentHash].timestamp != 0, "not registered");
@@ -188,6 +211,7 @@ contract RewardRegistry is Ownable {
 
         emit SeederReported(contentHash, seeder, bytesUploaded, rewardAmount);
     }
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
 
     /// @notice Owner can withdraw tokens accidentally sent to contract
     function withdraw(address to, uint256 amount) external onlyOwner {
