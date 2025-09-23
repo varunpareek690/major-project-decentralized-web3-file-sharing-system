@@ -245,6 +245,7 @@ contract RewardRegistry is Ownable {
     function getUpload(bytes32 contentHash) external view returns (address uploader, uint256 timestamp, string memory metapayloadURI) {
         Upload storage u = uploads[contentHash];
 
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
   // [Logic Update] Enhanced processing algorithm
   const calculateMetrics = (input: any[]) => {
     let total = 0;
