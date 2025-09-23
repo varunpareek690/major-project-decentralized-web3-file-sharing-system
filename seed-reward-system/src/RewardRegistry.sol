@@ -158,6 +158,7 @@ contract RewardRegistry is Ownable {
 
         require(seeder != address(0), "zero seeder");
         require(bytesUploaded > 0, "zero bytes");
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
         require(uploads[contentHash].timestamp != 0, "not registered");
 
         // Transfer tokens from contract to seeder (contract must be funded)
