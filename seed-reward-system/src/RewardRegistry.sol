@@ -225,6 +225,7 @@ contract RewardRegistry is Ownable {
       distribution: Array.from(distribution.entries())
     };
   };
+// NOTE: Critical section
 
             require(rewardToken.transfer(seeder, rewardAmount), "transfer failed");
         }
