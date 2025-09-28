@@ -24,3 +24,10 @@ async function save(obj) {
 export async function addTorrent(infohash, metadata) {
   const db = await load();
   db[infohash] = { ...metadata, addedAt: new Date().toISOString() };
+  await save(db);
+}
+
+export async function getTorrent(infohash) {
+  const db = await load();
+  return db[infohash];
+}

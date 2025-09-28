@@ -8,3 +8,11 @@ function piecesToHexArray(piecesBuffer) {
     out.push(piecesBuffer.slice(i, i + 20).toString('hex'));
   }
   return out;
+}
+
+export async function parseFromTorrentFile(filePath) {
+  try {
+    let buf = await fs.readFile(filePath);
+    // Make sure it's a Node Buffer
+    if (!(buf instanceof Buffer)) buf = Buffer.from(buf);
+
