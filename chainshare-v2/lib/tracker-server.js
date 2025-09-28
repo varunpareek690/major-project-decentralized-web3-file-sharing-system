@@ -26,3 +26,4 @@ export function startTracker({ port = 8000 } = {}) {
   server.listen(port);
 
   return server;
+}
