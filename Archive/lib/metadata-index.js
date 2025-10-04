@@ -31,3 +31,7 @@ export async function getTorrent(infohash) {
   const db = await load();
   return db[infohash];
 }
+
+export async function list() {
+  return await load();
+}
