@@ -28,3 +28,8 @@ export async function download(magnetURI, {
 
   return new Promise((resolve, reject) => {
     let metadataReceived = false;
+    let downloadStarted = false;
+    
+    // Set timeout for metadata
+    const metadataTimeout = setTimeout(() => {
+      if (!metadataReceived) {
