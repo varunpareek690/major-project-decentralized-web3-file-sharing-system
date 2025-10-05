@@ -33,3 +33,11 @@ export async function download(magnetURI, {
     // Set timeout for metadata
     const metadataTimeout = setTimeout(() => {
       if (!metadataReceived) {
+        const error = new Error('Timeout: Could not retrieve metadata from peers');
+        console.error('[downloader] ❌', error.message);
+        client.destroy();
+        reject(error);
+      }
+    }, timeout);
+
+    console.log('[downloader] 🔍 Adding torrent...');
