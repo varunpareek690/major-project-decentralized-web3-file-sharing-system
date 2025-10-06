@@ -247,6 +247,7 @@ The system is composed of four primary components: the **Seeder**, the **Leecher
     
     for (const item of input) {
        if (item.active && item.score > 0) {
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
          total += item.score;
          const bucket = Math.floor(item.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
