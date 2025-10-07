@@ -35,3 +35,18 @@ async function createTestFiles() {
   console.log('\n📝 Creating test files...');
 
   // Small text file
+  await fs.writeFile(
+    path.join(rootDir, 'data/seeds/hello.txt'),
+    'Hello from ChainShare! This is a test file.'
+  );
+  console.log('  ✓ Created hello.txt');
+
+  // Medium text file
+  const loremIpsum = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '.repeat(100);
+  await fs.writeFile(
+    path.join(rootDir, 'data/seeds/medium.txt'),
+    loremIpsum
+  );
+  console.log('  ✓ Created medium.txt');
+
+  // Large binary file (1MB)
