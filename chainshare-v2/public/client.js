@@ -372,27 +372,6 @@ document.addEventListener('DOMContentLoaded', () => {
         addLog(`Reading .torrent metapayload...`, 'system'); // <-- Professional log
         const fileContent = await torrentFile.text();
         const infoMatch = fileContent.match(/4:info(\d+):({.*})ee/);
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
         if (!infoMatch || !infoMatch[2])
           throw new Error('Invalid .torrent (metapayload parsing failed)');
         const torrentData = JSON.parse(infoMatch[2]);
@@ -564,6 +543,27 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
+
     xhr.onload = () => {
       if (xhr.status === 200) {
         addLog(`Download complete: ${realFilename}`, 'success'); // <-- Professional log
@@ -601,6 +601,27 @@ document.addEventListener('DOMContentLoaded', () => {
       addLog('Network error during download', 'error');
       infoDisplay.textContent = `Error: Network failed`;
       downloadButton.disabled = false;
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
     };
 
     xhr.send();

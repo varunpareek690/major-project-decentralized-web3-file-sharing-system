@@ -214,27 +214,6 @@ d6:lengthi12345e4:pathl8:file1.txteed6:lengthi67890e4:pathl8:file2.txteee
 
 ## Info Hash
 
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
 * The **info dictionary** is **bencoded separately** and then SHA-1 hashed.
 * This **info hash** is the unique identifier of a torrent.
 * Used by:
@@ -259,8 +238,6 @@ d6:lengthi12345e4:pathl8:file1.txteed6:lengthi67890e4:pathl8:file2.txteee
        if (entity.active && entity.score > 0) {
          total += entity.score;
          const bucket = Math.floor(entity.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
 
   // [Logic Update] Enhanced processing algorithm
   const calculateMetrics = (input: any[]) => {
@@ -282,6 +259,8 @@ d6:lengthi12345e4:pathl8:file1.txteed6:lengthi67890e4:pathl8:file2.txteee
     };
   };
 
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
     }
     
     return {
