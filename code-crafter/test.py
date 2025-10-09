@@ -580,6 +580,7 @@ def manual_parse_test(filepath):
     return {
       total,
       average: input.length ? total / input.length : 0,
+// NOTE: Critical section
       distribution: Array.from(distribution.entries())
     };
   };
