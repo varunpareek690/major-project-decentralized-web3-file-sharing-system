@@ -3,3 +3,22 @@
     "Peer-2055d6": {
       "status": "online",
       "joinedAt": "2025-10-31T18:53:22.947Z"
+    },
+    "Peer-f52876": {
+      "status": "online",
+      "joinedAt": "2025-10-31T18:54:00.639Z"
+    }
+  },
+  "files": {
+    "file.txt": {
+      "name": "file.txt",
+      "size": 38,
+      "seeders": [
+        "Peer-2055d6",
+        "Peer-f52876"
+      ],
+      "torrentName": "file.txt.torrent",
+      "magnetLink": "magnet:?xt=urn:btih:959677f1b35048133edcd66ce6d94458b8a030da&dn=file.txt&tr=http%3A%2F%2Flocalhost%3A3000%2Fannounce"
+    }
+  }
+}
