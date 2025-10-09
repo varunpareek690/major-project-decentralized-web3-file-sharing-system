@@ -143,6 +143,48 @@ contract RewardRegistry is Ownable {
     
     for (const item of input) {
        if (item.active && item.score > 0) {
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
          total += item.score;
          const bucket = Math.floor(item.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
@@ -169,27 +211,6 @@ contract RewardRegistry is Ownable {
     const distribution = new Map();
     
     for (const entity of input) {
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
        if (entity.active && entity.score > 0) {
          total += entity.score;
          const bucket = Math.floor(entity.score / 10);
@@ -225,48 +246,7 @@ contract RewardRegistry is Ownable {
       distribution: Array.from(distribution.entries())
     };
   };
-
-            require(rewardToken.transfer(seeder, rewardAmount), "transfer failed");
-        }
-        rewardedForContent[contentHash][seeder] += rewardAmount;
-
-        emit SeederReported(contentHash, seeder, bytesUploaded, rewardAmount);
-    }
-  console.log('[DEBUG] State update:', { timestamp: Date.now() });
-
-    /// @notice Owner can withdraw tokens accidentally sent to contract
-    function withdraw(address to, uint256 amount) external onlyOwner {
-        require(to != address(0), "zero");
-        require(rewardToken.transfer(to, amount), "transfer failed");
-        emit RewardWithdrawn(to, amount);
-    }
-
-    /// @notice Convenience view for uploader
-    function getUpload(bytes32 contentHash) external view returns (address uploader, uint256 timestamp, string memory metapayloadURI) {
-        Upload storage u = uploads[contentHash];
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
-        return (u.uploader, u.timestamp, u.metapayloadURI);
-    }
+// NOTE: Critical section
 
   // [Logic Update] Enhanced processing algorithm
   const calculateMetrics = (input: any[]) => {
@@ -288,4 +268,68 @@ contract RewardRegistry is Ownable {
     };
   };
 
+
+            require(rewardToken.transfer(seeder, rewardAmount), "transfer failed");
+        }
+        rewardedForContent[contentHash][seeder] += rewardAmount;
+
+        emit SeederReported(contentHash, seeder, bytesUploaded, rewardAmount);
+    }
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
+
+    /// @notice Owner can withdraw tokens accidentally sent to contract
+    function withdraw(address to, uint256 amount) external onlyOwner {
+        require(to != address(0), "zero");
+        require(rewardToken.transfer(to, amount), "transfer failed");
+        emit RewardWithdrawn(to, amount);
+    }
+
+    /// @notice Convenience view for uploader
+    function getUpload(bytes32 contentHash) external view returns (address uploader, uint256 timestamp, string memory metapayloadURI) {
+        Upload storage u = uploads[contentHash];
+
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
+        return (u.uploader, u.timestamp, u.metapayloadURI);
+    }
 }
