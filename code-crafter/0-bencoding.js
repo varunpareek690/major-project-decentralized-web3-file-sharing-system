@@ -15,3 +15,12 @@ function encode(data) {
   }
 }
 
+// Decode functions
+function decode(input) {
+  let index = 0;
+
+  function parse() {
+    if (input[index] === "i") {
+      index++;
+      let end = input.indexOf("e", index);
+      let number = parseInt(input.slice(index, end), 10);

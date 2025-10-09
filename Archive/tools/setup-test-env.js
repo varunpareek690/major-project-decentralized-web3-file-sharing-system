@@ -50,3 +50,15 @@ async function createTestFiles() {
   console.log('  ✓ Created medium.txt');
 
   // Large binary file (1MB)
+  const largeBuffer = crypto.randomBytes(1024 * 1024);
+  await fs.writeFile(
+    path.join(rootDir, 'data/seeds/binary.dat'),
+    largeBuffer
+  );
+  console.log('  ✓ Created binary.dat (1MB)');
+
+  // Multi-file directory
+  const multiFileDir = path.join(rootDir, 'data/seeds/project');
+  await fs.ensureDir(multiFileDir);
+  await fs.writeFile(path.join(multiFileDir, 'README.md'), '# Test Project\n\nThis is a test project.');
+  await fs.writeFile(path.join(multiFileDir, 'index.js'), 'console.log("Hello World");');
