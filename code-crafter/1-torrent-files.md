@@ -6,3 +6,12 @@ A `.torrent` file is a **metadata file used by the BitTorrent protocol** to faci
 
 ---
 
+## Core Components of a `.torrent` File
+
+A typical `.torrent` file contains the following top-level keys:
+
+1. **`announce`**
+
+   * Type: String
+   * The URL of the tracker, a server that helps peers find each other.
+   * Example:

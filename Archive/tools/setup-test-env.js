@@ -62,3 +62,9 @@ async function createTestFiles() {
   await fs.ensureDir(multiFileDir);
   await fs.writeFile(path.join(multiFileDir, 'README.md'), '# Test Project\n\nThis is a test project.');
   await fs.writeFile(path.join(multiFileDir, 'index.js'), 'console.log("Hello World");');
+  await fs.writeFile(path.join(multiFileDir, 'package.json'), JSON.stringify({ name: 'test-project', version: '1.0.0' }, null, 2));
+  
+  const srcDir = path.join(multiFileDir, 'src');
+  await fs.ensureDir(srcDir);
+  await fs.writeFile(path.join(srcDir, 'app.js'), 'export default function app() { return "App"; }');
+  await fs.writeFile(path.join(srcDir, 'utils.js'), 'export function helper() { return true; }');
