@@ -552,6 +552,27 @@ def manual_parse_test(filepath):
         print(f"Position after '6:pieces': {after_pieces}")
         print(f"Next bytes: {payload[after_pieces:after_pieces+10]}")
         
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
         # Look for the pattern "60:" which should be the length of pieces payload
         if payload[after_pieces:after_pieces+3] == b'60:':
             pieces_payload_start = after_pieces + 3
