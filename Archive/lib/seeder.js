@@ -20,3 +20,33 @@ function parseTorrentBuffer(buffer) {
     
     return {
       infoHash,
+      name: info.name?.toString('utf8') || 'unknown',
+      announce: torrent.announce?.toString('utf8'),
+      announceList: torrent['announce-list'],
+      info
+    };
+  } catch (err) {
+    console.error('[torrent] Failed to parse torrent:', err);
+    return null;
+  }
+}
+
+/**
+ * Create a .torrent file from a file or directory
+ * @returns {Promise<{parsed, outPath, buffer}>}
+ */
+async function createTorrentFile(inputPath, outDir, opts = {}) {
+  await fs.ensureDir(outDir);
+
+  console.log(`[torrent] Creating torrent for: ${inputPath}`);
+  
+  const buffer = await new Promise((resolve, reject) => {
+    createTorrent(inputPath, opts, (err, torrent) => {
+      if (err) {
+        console.error('[torrent] createTorrent error:', err);
+        return reject(err);
+      }
+      const buf = Buffer.isBuffer(torrent) ? torrent : Buffer.from(torrent);
+      console.log('[torrent] Torrent buffer created, size:', buf.length);
+      resolve(buf);
+    });
