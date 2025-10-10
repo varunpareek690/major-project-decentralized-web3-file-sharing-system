@@ -24,3 +24,21 @@ function decode(input) {
       index++;
       let end = input.indexOf("e", index);
       let number = parseInt(input.slice(index, end), 10);
+      index = end + 1;
+      return number;
+    } else if (/\d/.test(input[index])) {
+      let colon = input.indexOf(":", index);
+      let length = parseInt(input.slice(index, colon), 10);
+      let start = colon + 1;
+      let str = input.slice(start, start + length);
+      index = start + length;
+      return str;
+    } else if (input[index] === "l") {
+      index++;
+      let arr = [];
+      while (input[index] !== "e") arr.push(parse());
+      index++;
+      return arr;
+    } else if (input[index] === "d") {
+      index++;
+      let obj = {};
