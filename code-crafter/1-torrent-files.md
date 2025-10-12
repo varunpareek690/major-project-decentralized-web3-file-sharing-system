@@ -15,3 +15,15 @@ A typical `.torrent` file contains the following top-level keys:
    * Type: String
    * The URL of the tracker, a server that helps peers find each other.
    * Example:
+
+     ```bencode
+     13:http://tracker.example.com
+     ```
+
+2. **`info`**
+
+   * Type: Dictionary
+   * Contains the metadata for the actual content being shared.
+   * This section is **critical**, as its SHA-1 hash is used as the **info hash**, a unique identifier for the torrent.
+
+   Common keys inside `info`:
