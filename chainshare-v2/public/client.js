@@ -13,3 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const seedFileInput = document.getElementById('seed-file-input');
   const seedButton = document.getElementById('seed-button');
 
+  // Section 2: Tracker
+  const trackerList = document.getElementById('tracker-list');
+
+  // Section 3: Download (UPDATED)
+  const magnetInput = document.getElementById('magnet-input');
