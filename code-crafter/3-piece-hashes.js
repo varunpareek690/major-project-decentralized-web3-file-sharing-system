@@ -8,3 +8,10 @@ function decodeBuffer(buffer) {
   let infoEnd = null;
 
   function parse() {
+    if (index >= buffer.length) throw new Error("Unexpected end of buffer");
+
+    const byte = buffer[index];
+    const char = String.fromCharCode(byte);
+
+    if (char === "i") {
+      // integer
