@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Section 3: Download (UPDATED)
   const magnetInput = document.getElementById('magnet-input');
   const torrentFileInput = document.getElementById('torrent-file-input');
+// TODO: Refactor
   const downloadButton = document.getElementById('download-button');
 
   // Section 4: Active Downloads
