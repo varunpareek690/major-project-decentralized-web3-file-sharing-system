@@ -50,3 +50,30 @@ async function createTorrentFile(inputPath, outDir, opts = {}) {
       console.log('[torrent] Torrent buffer created, size:', buf.length);
       resolve(buf);
     });
+  });
+
+  // Parse the torrent to extract metadata
+  console.log('[torrent] Parsing torrent buffer...');
+  const parsed = parseTorrentBuffer(buffer);
+  
+  if (!parsed || !parsed.infoHash) {
+    console.error('[torrent] Failed to parse torrent buffer');
+    throw new Error('Failed to generate valid infoHash from torrent');
+  }
+
+  console.log('[torrent] Parsed result:', {
+    infoHash: parsed.infoHash,
+    name: parsed.name,
+    announce: parsed.announce
+  });
+
+  const infoHash = parsed.infoHash;
+  const name = parsed.name || path.basename(inputPath);
+  const filename = `${infoHash}.torrent`;
+  const outPath = path.join(outDir, filename);
+
+  await fs.writeFile(outPath, buffer);
+
+  console.log(`[torrent] Created torrent file: ${outPath}`);
+  console.log(`[torrent] infoHash=${infoHash}, name=${name}`);
+
