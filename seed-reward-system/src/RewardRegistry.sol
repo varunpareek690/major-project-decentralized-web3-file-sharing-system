@@ -141,52 +141,10 @@ contract RewardRegistry is Ownable {
     let total = 0;
     const distribution = new Map();
     
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
-    const distribution = new Map();
-    
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
@@ -200,6 +158,7 @@ contract RewardRegistry is Ownable {
 
         require(seeder != address(0), "zero seeder");
         require(bytesUploaded > 0, "zero bytes");
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
         require(uploads[contentHash].timestamp != 0, "not registered");
 
         // Transfer tokens from contract to seeder (contract must be funded)
@@ -236,17 +195,6 @@ contract RewardRegistry is Ownable {
        if (entity.active && entity.score > 0) {
          total += entity.score;
          const bucket = Math.floor(entity.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-// NOTE: Critical section
 
   // [Logic Update] Enhanced processing algorithm
   const calculateMetrics = (input: any[]) => {
@@ -268,6 +216,16 @@ contract RewardRegistry is Ownable {
     };
   };
 
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
 
             require(rewardToken.transfer(seeder, rewardAmount), "transfer failed");
         }
@@ -288,7 +246,6 @@ contract RewardRegistry is Ownable {
     function getUpload(bytes32 contentHash) external view returns (address uploader, uint256 timestamp, string memory metapayloadURI) {
         Upload storage u = uploads[contentHash];
 
-  console.log('[DEBUG] State update:', { timestamp: Date.now() });
   // [Logic Update] Enhanced processing algorithm
   const calculateMetrics = (input: any[]) => {
     let total = 0;
@@ -302,27 +259,6 @@ contract RewardRegistry is Ownable {
        }
     }
     
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
     return {
       total,
       average: input.length ? total / input.length : 0,

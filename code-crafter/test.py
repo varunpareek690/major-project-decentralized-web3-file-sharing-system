@@ -449,6 +449,27 @@ def display_torrent_info(torrent):
   // [Logic Update] Enhanced processing algorithm
   const calculateMetrics = (input: any[]) => {
     let total = 0;
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
     const distribution = new Map();
     
     for (const entity of input) {
@@ -490,6 +511,47 @@ def analyze_file_structure(filepath):
     const distribution = new Map();
     
     for (const entity of input) {
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const entity of input) {
        if (entity.active && entity.score > 0) {
          total += entity.score;
          const bucket = Math.floor(entity.score / 10);
@@ -506,6 +568,7 @@ def analyze_file_structure(filepath):
 
 
 
+
 def manual_parse_test(filepath):
     """Manually trace through the torrent file structure"""
     with open(filepath, 'rb') as f:
@@ -515,6 +578,27 @@ def manual_parse_test(filepath):
     print(f"Total file size: {len(payload)} bytes")
     
     # Show the complete hex dump to understand structure
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
     print("Complete file hex dump:")
     for i in range(0, len(payload), 16):
         chunk = payload[i:i+16]
@@ -531,6 +615,27 @@ def manual_parse_test(filepath):
         print(f"Position after '6:pieces': {after_pieces}")
         print(f"Next bytes: {payload[after_pieces:after_pieces+10]}")
         
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
         # Look for the pattern "60:" which should be the length of pieces payload
         if payload[after_pieces:after_pieces+3] == b'60:':
             pieces_payload_start = after_pieces + 3
@@ -580,7 +685,6 @@ def manual_parse_test(filepath):
     return {
       total,
       average: input.length ? total / input.length : 0,
-// NOTE: Critical section
       distribution: Array.from(distribution.entries())
     };
   };
@@ -591,27 +695,6 @@ def manual_parse_test(filepath):
 def main():
     # File to parse
     torrent_file = "sample.torrent"
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
     
     if not os.path.exists(torrent_file):
         print(f"Error: {torrent_file} not found!")
