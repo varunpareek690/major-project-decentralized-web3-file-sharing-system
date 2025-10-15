@@ -68,3 +68,24 @@ async function createTestFiles() {
   await fs.ensureDir(srcDir);
   await fs.writeFile(path.join(srcDir, 'app.js'), 'export default function app() { return "App"; }');
   await fs.writeFile(path.join(srcDir, 'utils.js'), 'export function helper() { return true; }');
+  
+  console.log('  ✓ Created project/ directory with 5 files');
+
+  // Clean/initialize index
+  await fs.writeFile(
+    path.join(rootDir, 'data/index.json'),
+    JSON.stringify({}, null, 2)
+  );
+  console.log('\n📊 Initialized metadata index');
+}
+
+async function createConfigFile() {
+  console.log('\n⚙️  Creating default config...');
+  
+  const config = {
+    tracker: {
+      port: 8000,
+      host: 'localhost'
+    },
+    seeder: {
+      announce: ['http://localhost:8000/announce'],
