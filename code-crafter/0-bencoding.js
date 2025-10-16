@@ -42,3 +42,27 @@ function decode(input) {
     } else if (input[index] === "d") {
       index++;
       let obj = {};
+      while (input[index] !== "e") {
+        let key = parse();
+        let value = parse();
+        obj[key] = value;
+      }
+      index++;
+      return obj;
+    } else {
+      throw new Error("Invalid bencode format at index " + index);
+    }
+  }
+
+  return parse();
+}
+
+// --- Example Usage ---
+
+const data = {
+  announce: "http://tracker.example.com",
+  info: {
+    name: "myfile.txt",
+    length: 12345
+  },
+  files: ["file1.txt", "file2.txt"]
