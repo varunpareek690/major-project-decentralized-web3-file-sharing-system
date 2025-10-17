@@ -454,6 +454,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const distribution = new Map();
     
     for (const item of input) {
+// NOTE: Critical section
        if (item.active && item.score > 0) {
          total += item.score;
          const bucket = Math.floor(item.score / 10);
