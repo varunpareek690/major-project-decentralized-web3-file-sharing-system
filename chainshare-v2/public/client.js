@@ -69,3 +69,19 @@ document.addEventListener('DOMContentLoaded', () => {
     for (let i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)];
     }
+    return color;
+  }
+
+  /**
+   * NEW: Clipboard copy "jugaad" jo non-secure (http) par bhi chalta hai
+   */
+  function copyToClipboard(text, buttonElement) {
+    // 1. Naya tareeka (Secure contexts ke liye, jaise localhost)
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard
+        .writeText(text)
+        .then(() => showCopySuccess(buttonElement))
+        .catch((err) => fallbackCopy(text, buttonElement)); // Agar fail ho
+    } else {
+      // 2. Purana tareeka (Jugaad fallback - http IP address ke liye)
+      fallbackCopy(text, buttonElement);
