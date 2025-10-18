@@ -85,3 +85,19 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       // 2. Purana tareeka (Jugaad fallback - http IP address ke liye)
       fallbackCopy(text, buttonElement);
+    }
+  }
+
+  function fallbackCopy(text, buttonElement) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed'; // Dikhna nahi chahiye
+    textArea.style.top = '-9999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      document.execCommand('copy');
+      showCopySuccess(buttonElement);
+    } catch (err) {
+      addLog('Failed to copy magnet link', 'error');
