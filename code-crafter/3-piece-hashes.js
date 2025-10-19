@@ -15,3 +15,17 @@ function decodeBuffer(buffer) {
 
     if (char === "i") {
       // integer
+      index++;
+      let numStr = "";
+      while (index < buffer.length && buffer[index] !== 101)
+        numStr += String.fromCharCode(buffer[index++]); // 'e'
+      index++; // skip 'e'
+      return parseInt(numStr, 10);
+    } else if (byte >= 48 && byte <= 57) {
+      // string
+      let lenStr = "";
+      while (
+        index < buffer.length &&
+        buffer[index] >= 48 &&
+        buffer[index] <= 57
+      )
