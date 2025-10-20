@@ -31,3 +31,9 @@ Bencoding supports **four primitive types**: integers, strings, lists, and dicti
 * `i42e` → `42`
 * `i-3e` → `-3`
 * `i0e` → `0`
+
+---
+
+### 2. Strings
+
+* Format:
