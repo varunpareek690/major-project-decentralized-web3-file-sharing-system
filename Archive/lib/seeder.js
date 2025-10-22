@@ -77,3 +77,17 @@ async function createTorrentFile(inputPath, outDir, opts = {}) {
   console.log(`[torrent] Created torrent file: ${outPath}`);
   console.log(`[torrent] infoHash=${infoHash}, name=${name}`);
 
+  // Return both parsed metadata and file path
+  return { parsed, outPath, buffer };
+}
+
+/**
+ * Seed files or directories using WebTorrent
+ * @param {string|string[]} paths - File or directory paths to seed
+ * @param {Object} options - Configuration options
+ * @returns {Promise<{client, results}>}
+ */
+export async function seed(
+  paths,
+  {
+    announce = ['http://localhost:8000/announce'],
