@@ -89,3 +89,21 @@ async function createConfigFile() {
     },
     seeder: {
       announce: ['http://localhost:8000/announce'],
+      torrentOutDir: './data/torrents'
+    },
+    downloader: {
+      downloadPath: './data/downloads',
+      maxConnections: 55
+    }
+  };
+
+  await fs.ensureDir(path.join(rootDir, 'config'));
+  await fs.writeFile(
+    path.join(rootDir, 'config/default.json'),
+    JSON.stringify(config, null, 2)
+  );
+  console.log('  ✓ Created config/default.json');
+}
+
+async function createTestScript() {
+  console.log('\n🧪 Creating test script...');
