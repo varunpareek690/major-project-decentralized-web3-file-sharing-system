@@ -29,3 +29,18 @@ function decodeBuffer(buffer) {
         buffer[index] >= 48 &&
         buffer[index] <= 57
       )
+        lenStr += String.fromCharCode(buffer[index++]);
+      if (buffer[index++] !== 58)
+        throw new Error("Invalid bencode string: missing ':'");
+      const length = parseInt(lenStr, 10);
+      const data = buffer.slice(index, index + length);
+      index += length;
+      return data;
+    } else if (char === "l") {
+      // list
+      index++;
+      const arr = [];
+      while (index < buffer.length && buffer[index] !== 101) arr.push(parse());
+      index++; // skip 'e'
+      return arr;
+    } else if (char === "d") {
