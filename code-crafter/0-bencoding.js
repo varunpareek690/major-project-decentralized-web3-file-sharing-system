@@ -66,3 +66,12 @@ const data = {
     length: 12345
   },
   files: ["file1.txt", "file2.txt"]
+};
+
+// Encode
+const bencoded = encode(data);
+console.log("Bencoded Data:\n", bencoded);
+
+// Decode
+const decoded = decode(bencoded);
+console.log("\nDecoded Data:\n", decoded);
