@@ -27,3 +27,43 @@ A typical `.torrent` file contains the following top-level keys:
    * This section is **critical**, as its SHA-1 hash is used as the **info hash**, a unique identifier for the torrent.
 
    Common keys inside `info`:
+
+   * **`name`** → Suggested filename or folder name for the content.
+   * **`length`** → File size in bytes (for single-file torrents).
+   * **`files`** → List of dictionaries with `length` and `path` (for multi-file torrents).
+   * **`piece length`** → The size of each piece in bytes.
+   * **`pieces`** → Concatenated SHA-1 hashes of all pieces.
+
+3. **Optional Keys**
+
+   * **`announce-list`** → List of backup trackers.
+   * **`creation date`** → Unix timestamp of torrent creation.
+   * **`comment`** → User-supplied comment about the torrent.
+   * **`created by`** → Software that generated the torrent.
+   * **`encoding`** → Character encoding (usually UTF-8).
+
+---
+
+## Single-File Torrent Example
+
+**Bencoded form:**
+
+```
+d8:announce13:http://tracker.example.com4:infod6:lengthi12345e4:name8:myfile.txteee
+```
+
+**Decoded structure:**
+
+```json
+{
+  "announce": "http://tracker.example.com",
+  "info": {
+    "name": "myfile.txt",
+    "length": 12345
+  }
+}
+```
+
+---
+
+## Multi-File Torrent Example
