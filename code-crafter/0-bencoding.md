@@ -37,3 +37,33 @@ Bencoding supports **four primitive types**: integers, strings, lists, and dicti
 ### 2. Strings
 
 * Format:
+
+  ```
+  <length>:<string>
+  ```
+* `<length>` is the number of **bytes** (not characters).
+* Strings can contain **binary data**, not just UTF-8 text.
+
+**Examples:**
+
+* `4:spam` → `"spam"`
+* `0:` → `""` (empty string)
+* `11:hello world` → `"hello world"`
+
+---
+
+### 3. Lists
+
+* Format:
+
+  ```
+  l<items>e
+  ```
+* Begins with `l`, ends with `e`.
+* Can contain any valid bencoded type (including nested lists and dictionaries).
+
+**Example:**
+
+```
+l4:spam4:eggse
+```

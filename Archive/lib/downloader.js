@@ -41,3 +41,33 @@ export async function download(magnetURI, {
     }, timeout);
 
     console.log('[downloader] 🔍 Adding torrent...');
+    console.log(`[downloader] Magnet: ${magnetURI}`);
+
+    const torrent = client.add(magnetURI, opts);
+
+    // Metadata received
+    torrent.on('metadata', () => {
+      metadataReceived = true;
+      clearTimeout(metadataTimeout);
+      
+      console.log(`[downloader] 🧩 Metadata received:`);
+      console.log(`  ↳ Name: ${torrent.name}`);
+      console.log(`  ↳ InfoHash: ${torrent.infoHash}`);
+      console.log(`  ↳ Size: ${formatBytes(torrent.length)}`);
+      console.log(`  ↳ Files: ${torrent.files.length}`);
+      
+      torrent.files.forEach((file, i) => {
+        console.log(`     ${i + 1}. ${file.name} (${formatBytes(file.length)})`);
+      });
+
+      if (onMetadata) onMetadata(torrent);
+    });
+
+    // Download progress
+    torrent.on('download', bytes => {
+      if (!downloadStarted) {
+        downloadStarted = true;
+        console.log('[downloader] 📥 Download started...');
+      }
+
+      const progress = (torrent.progress * 100).toFixed(2);
