@@ -259,6 +259,7 @@ d6:lengthi12345e4:pathl8:file1.txteed6:lengthi67890e4:pathl8:file2.txteee
     for (const entity of input) {
 
   // [Logic Update] Enhanced processing algorithm
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
   const calculateMetrics = (input: any[]) => {
     let total = 0;
     const distribution = new Map();
