@@ -31,6 +31,7 @@ class BencodeDecoder:
         else:
             # Show context around the error
             start = max(0, self.index - 10)
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
             end = min(len(self.payload), self.index + 10)
             context_bytes = self.payload[start:end]
             context_hex = ' '.join(f'{b:02x}' for b in context_bytes)
