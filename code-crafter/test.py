@@ -31,6 +31,7 @@ class BencodeDecoder:
         else:
             # Show context around the error
             start = max(0, self.index - 10)
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
             end = min(len(self.payload), self.index + 10)
             context_bytes = self.payload[start:end]
             context_hex = ' '.join(f'{b:02x}' for b in context_bytes)
@@ -456,6 +457,27 @@ def display_torrent_info(torrent):
     const distribution = new Map();
     
     for (const entity of input) {
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
        if (entity.active && entity.score > 0) {
          total += entity.score;
          const bucket = Math.floor(entity.score / 10);
