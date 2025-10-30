@@ -101,3 +101,13 @@ document.addEventListener('DOMContentLoaded', () => {
       showCopySuccess(buttonElement);
     } catch (err) {
       addLog('Failed to copy magnet link', 'error');
+    }
+    document.body.removeChild(textArea);
+  }
+
+  // Button ka text "Copied!" dikhata hai
+  function showCopySuccess(buttonElement) {
+    const originalText = buttonElement.textContent;
+    buttonElement.textContent = 'Copied!';
+    buttonElement.classList.add('copied'); // CSS ke liye class
+    setTimeout(() => {
