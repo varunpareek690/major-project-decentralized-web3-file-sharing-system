@@ -44,3 +44,27 @@ function decodeBuffer(buffer) {
       index++; // skip 'e'
       return arr;
     } else if (char === "d") {
+      // dictionary
+      index++;
+      const obj = {};
+      while (index < buffer.length && buffer[index] !== 101) {
+        const keyBuffer = parse();
+        const key = keyBuffer.toString("utf8");
+
+        if (key === "info" && infoStart === null) {
+          infoStart = index;
+          obj[key] = parse();
+          infoEnd = index;
+        } else {
+          obj[key] = parse();
+        }
+      }
+      index++; // skip 'e'
+      return obj;
+    } else {
+      throw new Error(`Invalid bencode at index ${index}`);
+    }
+  }
+
+  const result = parse();
+  return { result, infoStart, infoEnd };
