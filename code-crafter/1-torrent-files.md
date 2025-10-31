@@ -67,3 +67,8 @@ d8:announce13:http://tracker.example.com4:infod6:lengthi12345e4:name8:myfile.txt
 ---
 
 ## Multi-File Torrent Example
+
+**Bencoded form:**
+
+```
+d8:announce13:http://tracker.example.com4:infod5:filesl

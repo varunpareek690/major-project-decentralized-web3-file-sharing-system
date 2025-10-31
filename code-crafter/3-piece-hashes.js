@@ -68,3 +68,9 @@ function decodeBuffer(buffer) {
 
   const result = parse();
   return { result, infoStart, infoEnd };
+}
+
+function parseTorrent(filePath) {
+  function splitPieces(piecesHex) {
+    const hashes = [];
+    for (let i = 0; i < piecesHex.length; i += 40) {

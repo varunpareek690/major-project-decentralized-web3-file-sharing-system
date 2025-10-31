@@ -91,3 +91,33 @@ export async function seed(
   paths,
   {
     announce = ['http://localhost:8000/announce'],
+    torrentOutDir = './data/torrents',
+    clientOptions = {},
+  } = {}
+) {
+  const client = new WebTorrent(clientOptions);
+  client.on('error', err => console.error('[seeder-client] error', err));
+
+  const seedPaths = Array.isArray(paths) ? paths : [paths];
+  const results = [];
+
+  for (const p of seedPaths) {
+    const absPath = path.resolve(p);
+    
+    console.log(`[seeder] Checking path: ${absPath}`);
+    
+    // Check if path exists
+    const exists = await fs.pathExists(absPath);
+    if (!exists) {
+      console.error(`[seeder] ❌ Path does not exist: ${absPath}`);
+      continue;
+    }
+
+    // Check if it's a file or directory
+    const stat = await fs.stat(absPath);
+    console.log(`[seeder] Path is a ${stat.isDirectory() ? 'directory' : 'file'}`);
+    console.log(`[seeder] Size: ${stat.size} bytes`);
+
+    try {
+      // Create torrent file and get parsed metadata
+      const { parsed, outPath } = await createTorrentFile(absPath, torrentOutDir, { 

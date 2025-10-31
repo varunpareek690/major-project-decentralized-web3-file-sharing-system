@@ -211,3 +211,18 @@ button:disabled {
   font-size: 0.75em;
   color: white;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* --- THIS IS THE FIX --- */
+/* Pehla peer (odd) green hoga */
+.progress-segment:nth-child(odd) {
+  background-color: #28a745; /* Green */
+}
+/* Doosra peer (even) dark green hoga */
+.progress-segment:nth-child(even) {
+  background-color: #218838; /* Dark Green */
+}

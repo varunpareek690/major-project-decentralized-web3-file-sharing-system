@@ -71,3 +71,15 @@ export async function download(magnetURI, {
       }
 
       const progress = (torrent.progress * 100).toFixed(2);
+      const downloaded = formatBytes(torrent.downloaded);
+      const total = formatBytes(torrent.length);
+      const speed = formatBytes(torrent.downloadSpeed);
+      const peers = torrent.numPeers;
+
+      // Log every 5% progress or call custom handler
+      if (onProgress) {
+        onProgress({
+          progress: torrent.progress,
+          downloaded: torrent.downloaded,
+          total: torrent.length,
+          speed: torrent.downloadSpeed,

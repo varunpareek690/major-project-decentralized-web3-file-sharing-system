@@ -19,3 +19,27 @@ export async function download(magnetURI, options = {}) {
   });
 
   console.log('✅ DHT enabled - searching for peers...');
+  console.log('✅ LSD enabled - scanning local network...');
+
+  const downloadPath = options.downloadPath || './data/downloads';
+
+  // Add the torrent
+  const torrent = await new Promise((resolve, reject) => {
+    const torrentObj = client.add(magnetURI, {
+      path: downloadPath,
+      announce: options.announce || []
+    });
+
+    let metadataReceived = false;
+    let firstPeerFound = false;
+
+    // Error handling
+    torrentObj.on('error', (err) => {
+      reject(new Error(`Torrent error: ${err.message}`));
+    });
+
+    // Metadata received (torrent info downloaded)
+    torrentObj.on('metadata', () => {
+      metadataReceived = true;
+      console.log('\n✅ Metadata received!');
+      console.log(`📁 Name: ${torrentObj.name}`);

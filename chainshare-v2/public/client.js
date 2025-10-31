@@ -111,3 +111,16 @@ document.addEventListener('DOMContentLoaded', () => {
     buttonElement.textContent = 'Copied!';
     buttonElement.classList.add('copied'); // CSS ke liye class
     setTimeout(() => {
+      buttonElement.textContent = originalText;
+      buttonElement.classList.remove('copied');
+    }, 1500); // 1.5 sec baad wapas normal
+  }
+
+  // --- 2. Core Logic ---
+
+  /**
+   * Backend WebSocket se connect karta hai
+   */
+  function connectWebSocket() {
+    const wsUrl = `ws://${window.location.host}`;
+    ws = new WebSocket(wsUrl);

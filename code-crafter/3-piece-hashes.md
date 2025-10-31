@@ -10,3 +10,18 @@ A **piece** is a fixed-size segment of the file being shared via a torrent. Rath
 
 * **Typical Sizes**:
 
+  * 256 KB
+  * 512 KB
+  * 1 MB
+
+The choice of piece size affects the efficiency of the torrent:
+
+* **Smaller pieces**: Allow for faster verification and more granular sharing but create more metadata overhead.
+* **Larger pieces**: Reduce overhead but can slow down verification and sharing if a piece is corrupted.
+
+---
+
+## 2. SHA-1 Hashing of Pieces
+
+Each piece in a torrent is assigned a **SHA-1 hash**, which is a cryptographic fingerprint of the piece's data.
+

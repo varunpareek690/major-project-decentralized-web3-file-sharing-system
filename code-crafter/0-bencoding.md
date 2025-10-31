@@ -67,3 +67,23 @@ Bencoding supports **four primitive types**: integers, strings, lists, and dicti
 ```
 l4:spam4:eggse
 ```
+
+→ `["spam", "eggs"]`
+
+**Nested example:**
+
+```
+li42e3:fooe
+```
+
+→ `[42, "foo"]`
+
+---
+
+### 4. Dictionaries
+
+* Format:
+
+  ```
+  d<key><value>e
+  ```

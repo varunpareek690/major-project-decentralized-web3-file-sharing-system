@@ -50,3 +50,18 @@ export async function list() {
 }
 
 export async function removeTorrent(infohash) {
+  const db = await load();
+  delete db[infohash];
+  await save(db);
+}
+
+export async function validateAndClean() {
+  const db = await load();
+  const cleaned = {};
+  let removedCount = 0;
+  
+  for (const [hash, data] of Object.entries(db)) {
+    // Validate infohash format
+    if (!/^[a-fA-F0-9]{40}$/.test(hash)) {
+      console.log(`[index] Removing invalid entry: ${hash}`);
+      removedCount++;

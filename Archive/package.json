@@ -1,0 +1,29 @@
+{
+  "name": "chainshare",
+  "version": "1.0.0",
+  "description": "",
+  "bin": {
+    "chainshare": "./bin/chainshare-node.js"
+  },
+  "scripts": {
+    "tracker": "node tools/start-tracker.js",
+    "seed": "node bin/chainshare-node.js seed",
+    "download": "node bin/chainshare-node.js download",
+    "list": "node bin/chainshare-node.js list",
+    "test:setup": "node tools/setup-test-env.js",
+    "test:local": "bash tools/test-local.sh"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "bencode": "^4.0.0",
+    "bittorrent-tracker": "^11.2.2",
+    "commander": "^14.0.2",
+    "create-torrent": "^6.1.0",
+    "fs-extra": "^11.3.2",
+    "parse-torrent": "^11.0.19",
+    "webtorrent": "^2.8.4",
+    "yargs": "^18.0.0"
+  }

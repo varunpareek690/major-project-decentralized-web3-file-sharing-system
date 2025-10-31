@@ -15,3 +15,8 @@ Traditional file-sharing systems, including many torrenting ecosystems, often re
 1.  **No Central Servers Are Needed:** Peers discover each other using a Distributed Hash Table (DHT), making the network robust and censorship-resistant.
 2.  **Trust is Programmed:** A blockchain layer is used to create an immutable ledger of peer participation, verify file integrity through on-chain hashes, and pave the way for a tokenized economy that rewards users for seeding files (contributing bandwidth).
 3.  **Users Control Their Data:** The P2P nature ensures that files are transferred directly between users without passing through an intermediary.
+
+This project merges the efficiency of P2P networking with the trust and decentralization of blockchain technology.
+
+
+

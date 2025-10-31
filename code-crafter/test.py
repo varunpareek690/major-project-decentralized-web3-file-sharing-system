@@ -23,3 +23,21 @@ class BencodeDecoder:
         if char == 'i':
             return self._parse_int()
         elif char.isdigit():
+            return self._parse_string()
+        elif char == 'l':
+            return self._parse_list()
+        elif char == 'd':
+            return self._parse_dict()
+        else:
+            # Show context around the error
+            start = max(0, self.index - 10)
+            end = min(len(self.data), self.index + 10)
+            context_bytes = self.data[start:end]
+            context_hex = ' '.join(f'{b:02x}' for b in context_bytes)
+            marker_pos = (self.index - start) * 3
+            marker = ' ' * marker_pos + '^'
+            
+            print(f"Context around error:")
+            print(f"  Bytes: {context_hex}")
+            print(f"  Pos:   {marker}")
+            

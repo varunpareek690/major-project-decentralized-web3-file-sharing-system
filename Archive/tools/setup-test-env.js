@@ -107,3 +107,16 @@ async function createConfigFile() {
 
 async function createTestScript() {
   console.log('\n🧪 Creating test script...');
+  
+  const script = `#!/bin/bash
+
+# ChainShare Local Test Script
+# This script tests basic torrent functionality
+
+echo "🚀 ChainShare Local Test"
+echo "========================"
+echo ""
+
+# Colors
+GREEN='\\033[0;32m'
+RED='\\033[0;31m'
