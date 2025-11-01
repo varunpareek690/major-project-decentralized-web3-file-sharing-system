@@ -121,3 +121,33 @@ export async function seed(
     try {
       // Create torrent file and get parsed metadata
       const { parsed, outPath } = await createTorrentFile(absPath, torrentOutDir, { 
+        announce,
+        name: path.basename(absPath)
+      });
+
+      // Seed the file/directory
+      const torrent = client.seed(absPath, { announce }, t => {
+        console.log(`[seeder] ✅ Seeded ${absPath}`);
+        console.log(`  ↳ infoHash: ${t.infoHash}`);
+        console.log(`  ↳ magnet:   ${t.magnetURI}`);
+        console.log(`  ↳ files:    ${t.files.length} file(s)`);
+      });
+
+      results.push({ 
+        path: absPath, 
+        torrent, 
+        torrentFile: outPath, 
+        parsed,
+        infoHash: parsed.infoHash,
+        magnetURI: `magnet:?xt=urn:btih:${parsed.infoHash}&dn=${encodeURIComponent(parsed.name)}`
+      });
+    } catch (err) {
+      console.error(`[seeder] ❌ Failed to seed ${absPath}:`, err.message);
+      throw err;
+    }
+  }
+
+  return { client, results };
+}
+
+export default seed;

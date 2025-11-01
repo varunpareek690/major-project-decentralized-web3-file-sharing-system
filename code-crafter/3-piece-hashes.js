@@ -74,3 +74,74 @@ function parseTorrent(filePath) {
   function splitPieces(piecesHex) {
     const hashes = [];
     for (let i = 0; i < piecesHex.length; i += 40) {
+      hashes.push(piecesHex.slice(i, i + 40));
+    }
+    return hashes;
+  }
+
+  function convertBufferFields(obj) {
+    if (Buffer.isBuffer(obj)) return obj.toString("utf8");
+    if (Array.isArray(obj)) return obj.map(convertBufferFields);
+    if (obj && typeof obj === "object") {
+      const newObj = {};
+      for (const key in obj) {
+        if (Buffer.isBuffer(obj[key])) {
+          if (key === "pieces") {
+            newObj[key] = obj[key].toString("hex");
+          } else {
+            newObj[key] = obj[key].toString("utf8");
+          }
+        } else {
+          newObj[key] = convertBufferFields(obj[key]);
+        }
+      }
+      return newObj;
+    }
+    return obj;
+  }
+
+  const buffer = fs.readFileSync(filePath);
+  const { result: torrent, infoStart, infoEnd } = decodeBuffer(buffer);
+
+  // Compute info hash
+  if (infoStart !== null && infoEnd !== null) {
+    const infoBuffer = buffer.slice(infoStart, infoEnd);
+    torrent.info_hash = crypto
+      .createHash("sha1")
+      .update(infoBuffer)
+      .digest("hex");
+  }
+
+  const convertedTorrent = convertBufferFields(torrent);
+
+  // Add additional fields
+  if (convertedTorrent.info) {
+    const piecesHex = convertedTorrent.info.pieces;
+    convertedTorrent.pieceLength = convertedTorrent.info["piece length"];
+    convertedTorrent.pieceHashes = splitPieces(piecesHex);
+  }
+
+  return convertedTorrent;
+}
+
+function displayTorrentJSON(torrent) {
+  console.log("=== TORRENT JSON ===");
+  console.log(JSON.stringify(torrent, null, 2));
+}
+
+// Example usage
+try {
+  const fileName = "ubuntu-25.10-desktop-amd64.iso.torrent";
+  const filePath = path.join(__dirname, fileName);
+
+  if (!fs.existsSync(filePath)) {
+    console.error(`File ${filePath} not found`);
+    process.exit(1);
+  }
+
+  const torrent = parseTorrent(filePath);
+
+  displayTorrentJSON(torrent);
+} catch (error) {
+  console.error("Error:", error.message);
+}

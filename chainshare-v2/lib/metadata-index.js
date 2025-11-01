@@ -65,3 +65,30 @@ export async function validateAndClean() {
     if (!/^[a-fA-F0-9]{40}$/.test(hash)) {
       console.log(`[index] Removing invalid entry: ${hash}`);
       removedCount++;
+      continue;
+    }
+    
+    // Validate data structure
+    if (!data || typeof data !== 'object') {
+      console.log(`[index] Removing corrupted entry: ${hash}`);
+      removedCount++;
+      continue;
+    }
+    
+    cleaned[hash] = {
+      name: data.name || 'Unknown',
+      size: data.size || 0,
+      files: Array.isArray(data.files) ? data.files : [],
+      addedAt: data.addedAt || new Date().toISOString(),
+      ...data
+    };
+  }
+  
+  await save(cleaned);
+  
+  if (removedCount > 0) {
+    console.log(`[index] Cleaned ${removedCount} invalid entries`);
+  }
+  
+  return { removed: removedCount, total: Object.keys(cleaned).length };
+}

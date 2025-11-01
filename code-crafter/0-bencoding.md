@@ -87,3 +87,90 @@ li42e3:fooe
   ```
   d<key><value>e
   ```
+* Begins with `d`, ends with `e`.
+* Keys **must be strings** (bencoded as such).
+* Keys must be **sorted lexicographically**.
+
+**Example:**
+
+```
+d3:cow3:moo4:spam4:eggse
+```
+
+→ `{"cow": "moo", "spam": "eggs"}`
+
+**Nested example:**
+
+```
+d4:dictd3:foo3:bare4:listli1ei2eee
+```
+
+→ `{"dict": {"foo": "bar"}, "list": [1, 2]}`
+
+---
+
+## Why Sorting Dictionary Keys Matters
+
+Since BitTorrent uses SHA-1 hashes on bencoded data (e.g., when computing the **info hash** of a `.torrent` file), the encoding must be **deterministic**.
+
+If dictionaries were not sorted, two peers might produce different encodings for the same logical structure → leading to mismatched hashes and broken communication.
+
+Thus, **all dictionary keys must be sorted in lexicographical (binary string) order**.
+
+---
+
+## Practical Example: A `.torrent` File
+
+A minimal `.torrent` file might look like this in raw bencoding:
+
+```
+d8:announce13:http://tracker.example.com4:infod6:lengthi12345e4:name8:myfile.txteee
+```
+
+Decoded structure:
+
+```json
+{
+  "announce": "http://tracker.example.com",
+  "info": {
+    "length": 12345,
+    "name": "myfile.txt"
+  }
+}
+```
+
+---
+
+## Common Uses
+
+* **`.torrent` files** → Store metadata about shared files:
+
+  * Tracker URLs
+  * File names
+  * File lengths
+  * Piece hashes
+* **BitTorrent Distributed Hash Table (DHT)** → Peers exchange bencoded messages.
+* **Lightweight serialization** → Although rare outside BitTorrent, bencoding can be used anywhere a simple, deterministic format is useful.
+
+---
+
+## Comparison to Other Formats
+
+| Feature        | Bencoding  | JSON       | XML       |
+| -------------- | ---------- | ---------- | --------- |
+| Human-readable | Somewhat   | Yes        | Yes       |
+| Binary data    | Yes        | Base64     | Encoded   |
+| Deterministic  | Yes        | Not always | No        |
+| Data types     | 4 types    | Many       | Many      |
+| Used in        | BitTorrent | Web APIs   | Documents |
+
+---
+
+## Summary
+
+* **Integers** → `i<digits>e`
+* **Strings** → `<length>:<string>`
+* **Lists** → `l<items>e`
+* **Dictionaries** → `d<key><value>e` (sorted keys)
+
+Bencoding may look primitive compared to JSON or YAML, but its **simplicity, binary-safety, and determinism** make it perfect for the **BitTorrent ecosystem**, where consistent encoding is critical.

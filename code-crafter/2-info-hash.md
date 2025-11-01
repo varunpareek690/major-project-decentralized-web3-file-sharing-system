@@ -34,3 +34,19 @@ name: "example_file.txt",
 length: 1024,
 piece length: 512,
 pieces: "<binary data>"
+}
+
+Bencode the dictionary:
+d4:name16:example_file.txt6:lengthi1024e12:piece lengthi512e6:pieces<binary data>e
+
+Compute SHA-1:
+SHA1(bencoded dictionary) => 40-character hex string
+
+pgsql
+Copy code
+
+## Notes
+
+- The info hash is **independent of other torrent metadata** (like trackers, comments, or creation date).  
+- It is critical that the **bencoding is exact**, otherwise the resulting hash will be incorrect.  
+- The info hash is used in magnet links to identify the torrent.
