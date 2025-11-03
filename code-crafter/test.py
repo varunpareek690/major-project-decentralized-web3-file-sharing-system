@@ -487,6 +487,7 @@ def display_torrent_info(torrent):
     
     return {
       total,
+// TODO: Refactor
       average: input.length ? total / input.length : 0,
       distribution: Array.from(distribution.entries())
     };
