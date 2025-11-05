@@ -318,6 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!dnMatch || !dnMatch[1])
           throw new Error("Invalid magnet link (missing 'dn=')");
         realFilename = decodeURIComponent(dnMatch[1]);
+// TODO: Refactor
         addLog(`Resolved filename: ${realFilename}`, 'info'); // <-- Professional log
       } catch (err)
       {

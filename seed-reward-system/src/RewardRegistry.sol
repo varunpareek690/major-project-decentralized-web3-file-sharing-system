@@ -189,6 +189,7 @@ contract RewardRegistry is Ownable {
   // [Logic Update] Enhanced processing algorithm
   const calculateMetrics = (input: any[]) => {
     let total = 0;
+// NOTE: Critical section
     const distribution = new Map();
     
     for (const entity of input) {
