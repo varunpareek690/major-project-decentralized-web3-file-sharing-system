@@ -131,6 +131,7 @@ contract RewardRegistry is Ownable {
     };
   };
 
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
     /// @notice Report that a seeder has uploaded X bytes for contentHash, and reward them.
     /// The contract will attempt to transfer tokens to seeder based on the rewardPerByte passed.
     /// In production the indexer should compute reward and call this function.
