@@ -15,6 +15,7 @@ A typical `.torrent` file contains the following top-level keys:
 
    * Type: String
    * The URL of the tracker, a server that helps peers find each other.
+// TODO: Refactor
    * Example:
 
      ```bencode
