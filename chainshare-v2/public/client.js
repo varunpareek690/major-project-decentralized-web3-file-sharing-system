@@ -416,10 +416,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let total = 0;
     const distribution = new Map();
     
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
@@ -522,10 +522,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let total = 0;
     const distribution = new Map();
     
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
@@ -571,6 +571,27 @@ document.addEventListener('DOMContentLoaded', () => {
     xhr.open('GET', `/api/download/${encodeURIComponent(realFilename)}`);
 
   // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
+
+  // [Logic Update] Enhanced processing algorithm
 
   // [Logic Update] Enhanced processing algorithm
   const calculateMetrics = (input: any[]) => {
@@ -587,6 +608,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     return {
       total,
+// TODO: Refactor
       average: input.length ? total / input.length : 0,
       distribution: Array.from(distribution.entries())
     };
@@ -623,6 +645,27 @@ document.addEventListener('DOMContentLoaded', () => {
           const currentWidth = target * totalPercent;
           segment.style.width = `${currentWidth}%`;
         });
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
         infoDisplay.textContent = `Downloading... ${(totalPercent * 100).toFixed(
           0
         )}% (${formatBytes(e.loaded)} / ${formatBytes(e.total)})`;
@@ -664,6 +707,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     xhr.onerror = () => {
       addLog('Network error during download', 'error');
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
       infoDisplay.textContent = `Error: Network failed`;
       downloadButton.disabled = false;
     };

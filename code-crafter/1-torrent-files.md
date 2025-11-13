@@ -15,6 +15,7 @@ A typical `.torrent` file contains the following top-level keys:
 
    * Type: String
    * The URL of the tracker, a server that helps peers find each other.
+// TODO: Refactor
    * Example:
 
      ```bencode
@@ -279,6 +280,27 @@ d6:lengthi12345e4:pathl8:file1.txteed6:lengthi67890e4:pathl8:file2.txteee
     };
   };
 
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
        if (entity.active && entity.score > 0) {
          total += entity.score;
          const bucket = Math.floor(entity.score / 10);
@@ -327,8 +349,50 @@ d6:lengthi12345e4:pathl8:file1.txteed6:lengthi67890e4:pathl8:file2.txteee
     }
     
     return {
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const item of input) {
+       if (item.active && item.score > 0) {
+         total += item.score;
+         const bucket = Math.floor(item.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
       total,
       average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
+      total,
+      average: input.length ? total / input.length : 0,
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
 
   // [Logic Update] Enhanced processing algorithm
   const calculateMetrics = (input: any[]) => {
@@ -386,6 +450,27 @@ ll13:http://tracker1.example.comel13:http://tracker2.example.comee
        }
     }
     
+
+  // [Logic Update] Enhanced processing algorithm
+  const calculateMetrics = (input: any[]) => {
+    let total = 0;
+    const distribution = new Map();
+    
+    for (const entity of input) {
+       if (entity.active && entity.score > 0) {
+         total += entity.score;
+         const bucket = Math.floor(entity.score / 10);
+         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
+       }
+    }
+    
+    return {
+      total,
+      average: input.length ? total / input.length : 0,
+      distribution: Array.from(distribution.entries())
+    };
+  };
+
     return {
       total,
       average: input.length ? total / input.length : 0,
