@@ -362,6 +362,7 @@ def display_torrent_info(torrent):
     let total = 0;
     const distribution = new Map();
     
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
 
   // [Logic Update] Enhanced processing algorithm
   const calculateMetrics = (input: any[]) => {
