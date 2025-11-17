@@ -290,6 +290,7 @@ d6:lengthi12345e4:pathl8:file1.txteed6:lengthi67890e4:pathl8:file2.txteee
        if (entity.active && entity.score > 0) {
          total += entity.score;
          const bucket = Math.floor(entity.score / 10);
+  console.log('[DEBUG] State update:', { timestamp: Date.now() });
          distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
        }
     }
