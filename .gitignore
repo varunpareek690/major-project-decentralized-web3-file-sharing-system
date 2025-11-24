@@ -1,0 +1,79 @@
+# =========================================
+# Node.js
+# =========================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# =========================================
+# Build / Output / Bundled files
+# =========================================
+dist/
+build/
+out/
+coverage/
+cache/
+logs/
+
+# =========================================
+# Environment and local config
+# =========================================
+.env
+.env.*
+.DS_Store
+
+# =========================================
+# IDE / Editor settings
+# =========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================================
+# Backend temp files
+# =========================================
+uploads/
+tmp/
+*.pid
+
+# =========================================
+# Hardhat
+# =========================================
+artifacts/
+typechain/
+typechain-types/
+cache/
+
+# =========================================
+# Foundry (Forge)
+# =========================================
+forge-artifacts/
+broadcast/
+
+# Ignore installed forge libraries
+lib/forge-std/
+lib/forge-gas-snapshot/
+lib/ds-test/
+lib/solmate/
+lib/openzeppelin-contracts/
+lib/*
+
+# =========================================
+# Smart contract dependency noise
+# =========================================
+# (these folders contain test, docs, scripts from dependency libs)
+**/audits/
+**/certora/
+**/docs/
+**/scripts/
+**/test/
+**/tests/
+
+# =========================================
+# System files
+# =========================================
+Thumbs.db
