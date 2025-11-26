@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🔗 ChainShare - Decentralized Client</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>🔗 ChainShare Client</h1>
+        <div class="status-bar">
+          <div>
+            Your Peer ID: <strong id="peer-id">Connecting...</strong>
+          </div>
+          <div>
+            <span id="peer-count">0</span> Peers Online
+          </div>
+        </div>
+      </header>
+
+      <section class="card">
+        <h2>1. Seed a New File (Upload)</h2>
+        <div class="form-group">
+          <input type="file" id="seed-file-input" />
+          <button id="seed-button">🌱 Seed File</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>2. Network File Tracker (Discover)</h2>
+        <table id="tracker-table">
+          <thead>
+            <tr>
+              <th>File Name</th>
+              <th>Size</th>
+              <th>Seeders</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tracker-list">
+            </tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <h2>3. Start Download (Leech)</h2>
+        <p>Use either the Magnet Link or upload the .torrent file.</p>
+        
+        <div class="download-option">
+          <input type="text" id="magnet-input" placeholder="Paste magnet link here...">
+        </div>
+        
+        <div class="download-option-divider">OR</div>
+
+        <div class="download-option">
+          <input type="file" id="torrent-file-input" accept=".torrent" />
+        </div>
+
+        <button id="download-button">🚀 Start Download</button>
+      </section>
+
+      <section class="card">
+        <h2>4. Active Downloads</h2>
+        <div id="downloads-list">
+          <p id="no-downloads">No active downloads.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>5. Real-time Logs</h2>
+        <div id="logs-container">
+          </div>
+      </section>
+    </div>
+
+    <script src="client.js"></script>
+  </body>
+</html>

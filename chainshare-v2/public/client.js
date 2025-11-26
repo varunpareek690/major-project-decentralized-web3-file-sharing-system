@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Section 3: Download (UPDATED)
   const magnetInput = document.getElementById('magnet-input');
   const torrentFileInput = document.getElementById('torrent-file-input');
-// TODO: Refactor
   const downloadButton = document.getElementById('download-button');
 
   // Section 4: Active Downloads
@@ -77,7 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
    * NEW: Clipboard copy "jugaad" jo non-secure (http) par bhi chalta hai
    */
   function copyToClipboard(text, buttonElement) {
-// NOTE: Critical section
     // 1. Naya tareeka (Secure contexts ke liye, jaise localhost)
     if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard
@@ -139,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Server se message receive karna
     ws.onmessage = (event) => {
-      const msg = JSON.parse(event.payload);
+      const msg = JSON.parse(event.data);
       switch (msg.type) {
         // --- BUG 1 FIX ---
         case 'YOUR_ID':
@@ -189,10 +187,10 @@ document.addEventListener('DOMContentLoaded', () => {
         <td ${seederCountStyle}>${file.seeders.length}</td>
         <td>
           <div class="action-buttons">
-            <button class="action-btn" payload-torrentname="${
+            <button class="action-btn" data-torrentname="${
               file.torrentName
             }">Download .torrent</button>
-            <button class="action-btn copy-magnet-btn" payload-magnetlink="${
+            <button class="action-btn copy-magnet-btn" data-magnetlink="${
               file.magnetLink
             }">Copy Magnet</button>
           </div>
@@ -237,27 +235,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /**
    * Download (Fake Torrent/Magnet) ko handle karta hai (UPDATED)
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
    */
   async function handleStartDownload() {
     downloadButton.disabled = true;
@@ -269,56 +246,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const torrentFile = torrentFileInput.files[0];
 
     if (magnetLink) {
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
       // --- JUGAAD: Magnet Link "Parse" ---
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
       try {
         addLog(`Parsing magnet link...`, 'system'); // <-- Professional log
         const dnMatch = magnetLink.match(/&dn=([^&]+)/);
         if (!dnMatch || !dnMatch[1])
           throw new Error("Invalid magnet link (missing 'dn=')");
         realFilename = decodeURIComponent(dnMatch[1]);
-// TODO: Refactor
         addLog(`Resolved filename: ${realFilename}`, 'info'); // <-- Professional log
       } catch (err)
       {
@@ -328,33 +262,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } else if (torrentFile) {
       // --- JUGAAD: .torrent File "Parse" ---
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
       try {
-        addLog(`Reading .torrent metapayload...`, 'system'); // <-- Professional log
+        addLog(`Reading .torrent metadata...`, 'system'); // <-- Professional log
         const fileContent = await torrentFile.text();
         const infoMatch = fileContent.match(/4:info(\d+):({.*})ee/);
         if (!infoMatch || !infoMatch[2])
-          throw new Error('Invalid .torrent (metapayload parsing failed)');
+          throw new Error('Invalid .torrent (metadata parsing failed)');
         const torrentData = JSON.parse(infoMatch[2]);
         if (!torrentData.filename)
           throw new Error('Invalid .torrent (missing filename)');
@@ -371,27 +284,6 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
     // --- File validation ---
     if (!realFilename) {
       addLog('Could not determine filename to download', 'error');
@@ -401,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     addLog(`Checking tracker for file: ${realFilename}`, 'info');
     if (!allFilesData[realFilename]) {
-      addLog(`File ${realFilename} not found in tracker payloadbase.`, 'error');
+      addLog(`File ${realFilename} not found in tracker database.`, 'error');
       downloadButton.disabled = false;
       return;
     }
@@ -410,27 +302,6 @@ document.addEventListener('DOMContentLoaded', () => {
     seeders = allFilesData[realFilename].seeders; // <-- Seeders ko assign kiya
     if (!seeders || seeders.length === 0) {
       addLog(
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
         `File ${realFilename} has 0 seeders. Cannot download.`,
         'error'
       );
@@ -446,9 +317,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const fileData = allFilesData[realFilename];
 
     const downloadItem = document.createElement('div');
-    downloadItem.className = 'download-entity';
+    downloadItem.className = 'download-item';
     downloadItem.innerHTML = `
-      <div class="download-entity-title">${realFilename}</div>
+      <div class="download-item-title">${realFilename}</div>
       <div class="progress-bar-container" id="bar-${downloadId}"></div>
       <div class="download-info" id="info-${downloadId}">Starting download...</div>
     `;
@@ -463,144 +334,17 @@ document.addEventListener('DOMContentLoaded', () => {
     for (let i = 0; i < seeders.length; i++) {
       const segment = document.createElement('div');
       segment.className = 'progress-segment';
-      segment.payloadset.peer = seeders[i];
+      segment.dataset.peer = seeders[i];
 
       let targetWidth = 0;
       if (i === seeders.length - 1) {
         targetWidth = remainingPercent;
       } else {
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const entity of input) {
-// NOTE: Critical section
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
-
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
         targetWidth =
           Math.random() * (remainingPercent / (seeders.length - i) * 1.5);
       }
       segmentTargets.push(targetWidth);
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
       segment.style.width = '0%';
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const item of input) {
-       if (item.active && item.score > 0) {
-         total += item.score;
-         const bucket = Math.floor(item.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
       segment.textContent = seeders[i];
       progressBar.appendChild(segment);
       remainingPercent -= targetWidth;
@@ -611,129 +355,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `/api/download/${encodeURIComponent(realFilename)}`);
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
-
-  // [Logic Update] Enhanced processing algorithm
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-// TODO: Refactor
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
     xhr.responseType = 'blob';
 
     xhr.addEventListener('progress', (e) => {
       if (e.lengthComputable) {
         const totalPercent = e.loaded / e.total;
         const segments = progressBar.querySelectorAll('.progress-segment');
-  console.log('[DEBUG] State update:', { timestamp: Date.now() });
         segments.forEach((segment, index) => {
           const target = segmentTargets[index];
           const currentWidth = target * totalPercent;
           segment.style.width = `${currentWidth}%`;
         });
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
         infoDisplay.textContent = `Downloading... ${(totalPercent * 100).toFixed(
           0
         )}% (${formatBytes(e.loaded)} / ${formatBytes(e.total)})`;
       }
     });
-
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
 
     xhr.onload = () => {
       if (xhr.status === 200) {
@@ -770,54 +407,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     xhr.onerror = () => {
       addLog('Network error during download', 'error');
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
       infoDisplay.textContent = `Error: Network failed`;
       downloadButton.disabled = false;
     };
 
     xhr.send();
     // --- BUG 2 FIX: 'Suchar;' line yahan se HATA di gayi hai ---
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
   }
 
   // --- 3. Event Listeners (Buttons ko chalu karna) ---
@@ -836,8 +431,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const target = e.target;
 
     // ".torrent" button click
-    if (target.classList.contains('action-btn') && target.payloadset.torrentname) {
-      const torrentName = target.payloadset.torrentname;
+    if (target.classList.contains('action-btn') && target.dataset.torrentname) {
+      const torrentName = target.dataset.torrentname;
       addLog(`Requesting .torrent file: ${torrentName}`, 'system'); // <-- Professional log
       window.location.href = `/api/torrent/${torrentName}`;
     }
@@ -845,30 +440,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // "Copy Magnet" button click
     if (
       target.classList.contains('copy-magnet-btn') &&
-
-  // [Logic Update] Enhanced processing algorithm
-  const calculateMetrics = (input: any[]) => {
-    let total = 0;
-    const distribution = new Map();
-    
-    for (const entity of input) {
-       if (entity.active && entity.score > 0) {
-         total += entity.score;
-         const bucket = Math.floor(entity.score / 10);
-         distribution.set(bucket, (distribution.get(bucket) || 0) + 1);
-       }
-    }
-    
-    return {
-      total,
-      average: input.length ? total / input.length : 0,
-      distribution: Array.from(distribution.entries())
-    };
-  };
-
-      target.payloadset.magnetlink
+      target.dataset.magnetlink
     ) {
-      const magnetLink = target.payloadset.magnetlink;
+      const magnetLink = target.dataset.magnetlink;
       copyToClipboard(magnetLink, target); // Naya "jugaad" copy function
     }
   });
